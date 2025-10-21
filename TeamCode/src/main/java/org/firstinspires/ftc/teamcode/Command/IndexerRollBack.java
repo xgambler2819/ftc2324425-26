@@ -13,6 +13,7 @@ public class IndexerRollBack extends CommandBase {
     public IndexerRollBack(Indexer indexer, Telemetry telemetry) {
         m_Indexer = indexer;
         m_telemetry = telemetry;
+        addRequirements(indexer);
     }
 
     @Override

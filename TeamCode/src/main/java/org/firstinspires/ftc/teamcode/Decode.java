@@ -14,7 +14,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@TeleOp(name = "mecanumadvanced")
+@TeleOp(name = "DecodeLinearOpMode")
 public class Decode extends LinearOpMode {
 
     //Drive Motors

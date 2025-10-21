@@ -5,10 +5,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class ShooterTargetHigh extends CommandReachTarget {
-    final int highVelocity =100;
-    public ShooterTargetHigh(Shooter subsystem, int targetVelocity) {
-        super(subsystem, targetVelocity);
-        subsystem.SetState(highVelocity, true);
+public class ShooterTargetHigh extends ShooterReachTarget {
+    final int highVelocity = 100;
+    public ShooterTargetHigh(Shooter shooter, int targetVelocity) {
+        super(shooter, targetVelocity);
+        shooter.SetState(highVelocity, true);
     }
 }

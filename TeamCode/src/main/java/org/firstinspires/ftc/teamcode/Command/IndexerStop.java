@@ -11,6 +11,7 @@ public class IndexerStop extends CommandBase {
     public IndexerStop(IndexerSubsystem indexer, Telemetry telemetry) {
         m_Indexer = indexer;
         m_telemetry = telemetry;
+        addRequirements(indexer);
     }
 
     @Override
