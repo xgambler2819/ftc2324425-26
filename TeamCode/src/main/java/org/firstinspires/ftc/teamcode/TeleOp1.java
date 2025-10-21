@@ -21,6 +21,8 @@ public class TeleOp1 extends CommandOpMode {
     private Shooter m_shooter;
     private Intake m_intake;
     private DriveTrain m_drivetrain;
+    private GamepadEx m_gamepad1;
+    private GamepadEx m_gamepad2;
 
     @Override
     public void initialize() {
@@ -30,7 +32,11 @@ public class TeleOp1 extends CommandOpMode {
         m_shooter = new Shooter(hardwareMap);
         m_shooter.setdefaultCommand(new ShooterKeepVelocity(m_shooter));
 
-
-
+        m_gamepad1 = new GamepadEx(gamepad1);
+        m_gamepad2 = new GamepadEx(gamepad2);
+        Button pad1_a = new GamepadButton(m_gamepad1, GamepadKeys.Button.A);
+        Button pad1_b = new GamepadButton(m_gamepad1, GamepadKeys.Button.B);
+        pad1_a.whenPressed(new ShooterTargetLow(m_shooter));
+        pad1_b.whenPressed(new IndexerRollForward(m_indexer));
     }
  }
