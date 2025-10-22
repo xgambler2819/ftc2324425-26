@@ -24,25 +24,23 @@ public class Indexer extends SubsystemBase {
         Stop();
     }
 
-    public void setPower(double power) {
-        m_servo1.setPower(power * m_servo1Direction);
-        m_servo2.setPower(power * m_servo2Direction);
-        m_intake.setPower(power);
-    }
-
     public void Rollbackward() {
-        setPower(BackwardPower);
+        m_servo1.setPower(BackwardPower * m_servo1Direction);
+        m_servo2.setPower(BackwardPower * m_servo2Direction);
+        m_intake.setPower(ForwardPower);
     }
 
     public void Rollfoward() {
-        setPower(ForwardPower);
-
+        m_servo1.setPower(ForwardPower * m_servo1Direction);
+        m_servo2.setPower(ForwardPower * m_servo2Direction);
+        m_intake.setPower(ForwardPower);
     }
 
     public void Stop() {
-        setPower(StopPower);
+        m_servo1.setPower(StopPower);
+        m_servo2.setPower(StopPower);
+        m_intake.setPower(StopPower);
     }
-
 }
 
 
