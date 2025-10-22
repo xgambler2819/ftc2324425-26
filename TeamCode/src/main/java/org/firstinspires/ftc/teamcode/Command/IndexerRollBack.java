@@ -8,7 +8,7 @@ public class IndexerRollBack extends CommandBase {
     private Indexer m_Indexer;
     private Telemetry m_telemetry;
     private long startTime;
-    private static final long DURATION = 1000; // 1 second
+    private static final long DURATION = 500; // 500 milliseconds
 
     public IndexerRollBack(Indexer indexer, Telemetry telemetry) {
         m_Indexer = indexer;
@@ -19,8 +19,6 @@ public class IndexerRollBack extends CommandBase {
     @Override
     public void initialize () {
         startTime = System.currentTimeMillis();
-    @Override
-    public void execute() {
         m_Indexer.Rollbackward();
     }
 
@@ -33,5 +31,4 @@ public class IndexerRollBack extends CommandBase {
     public void end(boolean interrupted) {
         m_Indexer.Stop();
     }
-
 }
