@@ -19,14 +19,12 @@ public class TeleOp1 extends CommandOpMode {
 
     private Indexer m_indexer;
     private Shooter m_shooter;
-    private Intake m_intake;
     private DriveTrain m_drivetrain;
     private GamepadEx m_gamepad1;
     private GamepadEx m_gamepad2;
 
     @Override
     public void initialize() {
-        m_intake = new Intake(hardwareMap);
         m_drivetrain = new DriveTrain(hardwareMap);
         m_indexer = new Indexer(hardwareMap);
         m_shooter = new Shooter(hardwareMap);
