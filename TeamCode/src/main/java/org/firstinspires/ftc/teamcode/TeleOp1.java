@@ -22,6 +22,7 @@ public class TeleOp1 extends CommandOpMode {
     private DriveTrain m_drivetrain;
     private GamepadEx m_gamepad1;
     private GamepadEx m_gamepad2;
+    private DriveDefault m_driveDefault;    
 
     @Override
     public void initialize() {
@@ -36,5 +37,8 @@ public class TeleOp1 extends CommandOpMode {
         Button pad1_b = new GamepadButton(m_gamepad1, GamepadKeys.Button.B);
         pad1_a.whenPressed(new ShooterTargetLow(m_shooter));
         pad1_b.whenPressed(new IndexerRollForward(m_indexer));
+
+        m_driveDefault = new DriveDefault(m_drivetrain, () -> m_gamepad1.getLeftX(), () -> m_gamepad1.getLeftY(), () -> m_gamepad1.getRightX());
+        m_drivetrain.setDefaultCommand(m_driveDefault);
     }
  }

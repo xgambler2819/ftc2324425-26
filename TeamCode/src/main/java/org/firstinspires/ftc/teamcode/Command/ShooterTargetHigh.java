@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class ShooterTargetHigh extends ShooterReachTarget {
     final int highVelocity = 100;
     public ShooterTargetHigh(Shooter shooter, int targetVelocity) {
-        super(shooter, targetVelocity);
+        super(shooter);
         shooter.SetState(highVelocity, true);
     }
 }
