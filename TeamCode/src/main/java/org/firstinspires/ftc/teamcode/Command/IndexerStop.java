@@ -1,21 +1,21 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Command;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.SubSystem.Indexer;
 
 public class IndexerStop extends CommandBase {
-    private IndexerSubsystem m_Indexer;
+    private Indexer m_indexer;
     private Telemetry m_telemetry;
 
-    public IndexerStop(IndexerSubsystem indexer, Telemetry telemetry) {
-        m_Indexer = indexer;
-        m_telemetry = telemetry;
+    public IndexerStop(Indexer indexer) {
+        m_indexer = indexer;
         addRequirements(indexer);
     }
 
     @Override
     public void initialize () {
-        m_Indexer.Stop();
+        m_indexer.Stop();
     }
 }

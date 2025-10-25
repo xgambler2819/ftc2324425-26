@@ -1,21 +1,21 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Command;
 
 import com.arcrobotics.ftclib.command.CommandBase;
 
 import java.util.function.DoubleSupplier;
-
+import org.firstinspires.ftc.teamcode.SubSystem.DriveTrain;
 /**
  * A command to drive the robot with joystick input (passed in as {@link DoubleSupplier}s). Written
  * explicitly for pedagogical purposes.
  */
-public class DefaultDrive extends CommandBase {
+public class DriveDefault extends CommandBase {
 
-    private final DriveSubsystem m_drive;
+    private final DriveTrain m_drive;
     private final DoubleSupplier m_strafe;
     private final DoubleSupplier m_forward;
     private final DoubleSupplier m_turn;
 
-    public DefaultDrive(DriveSubsystem subsystem,
+    public DriveDefault(DriveTrain subsystem,
         DoubleSupplier strafe, DoubleSupplier forward, DoubleSupplier turn) {
         m_drive = subsystem;
         m_strafe = strafe;
@@ -26,7 +26,8 @@ public class DefaultDrive extends CommandBase {
 
     @Override
     public void execute() {
-        m_drive.driveRobotCentric(m_strafe.getAsDouble(), m_forward.getAsDouble(), m_turn.getAsDouble());
+        //m_drive.driveRobotCentric(m_strafe.getAsDouble(), m_forward.getAsDouble(), m_turn.getAsDouble());
+        m_drive.driveRobotCentric(0.1, 0.3, 0.02);
     }
 
 }

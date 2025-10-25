@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.SubSystem;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
@@ -14,19 +14,17 @@ public class Shooter extends SubsystemBase {
     private int m_targetVelocity = 0;
     boolean m_keepVelocity = false;
 
-    public Shooter(final HardwareMap hmap, final String name, final Telemetry telemetry) {
+    public Shooter(final HardwareMap hmap, final Telemetry telemetry) {
         m_telemetry = telemetry;
         m_motor = new MotorEx(hmap, "ballroller", Motor.GoBILDA.BARE);
         m_motor.setRunMode(MotorEx.RunMode.VelocityControl);
-        motor.setVeloCoefficients(20, 0 , 0);
-    }
-    public void setVelocity(int velocity) {
-       m_motor.setVelocity(velocity);
-    }
+        m_motor.setVeloCoefficients(20, 0 , 0);
+        m_motor.setFeedforwardCoefficients(1.0, 0.5, 0.1);
+        m_motor.setInverted(true);
 
-    public double getVelocity(){
-        double velocity = m_motor.getVelocity();
-        return velocity;
+        m_targetVelocity = 0;
+        m_keepVelocity = false;
+        setState(0, true);
     }
 
     public void setState(int targetVelocity, boolean keepVelocity){
@@ -34,31 +32,32 @@ public class Shooter extends SubsystemBase {
         this.m_keepVelocity = keepVelocity;
         m_motor.setVelocity(targetVelocity);
     }
-    public int getTargetVelocity(){
-        return m_targetVelocity;
-    }
-    public boolean getKeepVelocity(){
-        return m_keepVelocity;
-    }
 
     public boolean reachTargetVelocity(){
         double currentVelocity = getVelocity();
-        if((Math.abs(currentVelocity-m_targetVelocity)/m_   targetVelocity)<0.03 ){
-            return true;
+        if (Math.abs(m_targetVelocity) < 0.01)
+        {
+            return Math.abs(currentVelocity) < 0.03;
         }
-
-        return false;
+        return (Math.abs(currentVelocity - m_targetVelocity) / m_targetVelocity) < 0.03;
     }       
 
     public void periodic() {
         if(m_keepVelocity){
             m_motor.setVelocity(m_targetVelocity);
         }
-        m_telemetry.addData("Shooter Velocity", m_motor.getVelocity());
+        /*
+        m_telemetry.addData("Shooter Velocity", getVelocity());
         m_telemetry.addData("Target", m_targetVelocity);
         m_telemetry.addData("Keep", m_keepVelocity);
-        m_telemetry.addData("At Target", reachTargetVelocity());
-    }
+        m_telemetry.addData("Reach", reachTargetVelocity());
 
+        m_telemetry.update();
+        */
+    }
+    private double getVelocity(){
+        double velocity = m_motor.getVelocity();
+        return velocity;
+    }
 }
 

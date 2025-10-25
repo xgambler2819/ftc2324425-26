@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.SubSystem;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -17,9 +18,11 @@ public class Indexer extends SubsystemBase {
     final int BackwardPower = -1;
     final int StopPower = 0;
 
-    public IndexerSubsystem(final HardwareMap hmap) {
+    public Indexer(final HardwareMap hmap) {
         m_servo1 = hmap.get(CRServo.class, "bottomroller");
+        m_servo1.setDirection(DcMotorSimple.Direction.REVERSE);
         m_servo2 = hmap.get(CRServo.class, "upperroller");
+        m_servo2.setDirection(DcMotorSimple.Direction.REVERSE);
         m_intake = hmap.get(DcMotor.class, "intake");
         Stop();
     }
@@ -30,7 +33,7 @@ public class Indexer extends SubsystemBase {
         m_intake.setPower(ForwardPower);
     }
 
-    public void Rollfoward() {
+    public void RollForward() {
         m_servo1.setPower(ForwardPower * m_servo1Direction);
         m_servo2.setPower(ForwardPower * m_servo2Direction);
         m_intake.setPower(ForwardPower);
