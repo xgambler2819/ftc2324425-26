@@ -16,6 +16,6 @@ public class ShooterStop extends CommandBase {
 
     @Override
     public void initialize() {
-        m_shooter.setState(0, true);
+        m_shooter.setStop();
     }
 }

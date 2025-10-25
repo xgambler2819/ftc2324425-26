@@ -4,19 +4,27 @@ import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.hardware.motors.MotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoController;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Shooter extends SubsystemBase {
     private MotorEx m_motor;
+
+    private Servo m_led;
     private Telemetry m_telemetry;
 
     private int m_targetVelocity = 0;
     boolean m_keepVelocity = false;
 
+    final int HighVelocity = 1200;
+    final int LowVelocity = 1000;
     public Shooter(final HardwareMap hmap, final Telemetry telemetry) {
         m_telemetry = telemetry;
         m_motor = new MotorEx(hmap, "ballroller", Motor.GoBILDA.BARE);
+        m_led = hmap.get(Servo.class, "led");
+        m_led.setPosition(0.279);
         m_motor.setRunMode(MotorEx.RunMode.VelocityControl);
         m_motor.setVeloCoefficients(20, 0 , 0);
         m_motor.setFeedforwardCoefficients(0, 0.7, 0);
@@ -33,6 +41,19 @@ public class Shooter extends SubsystemBase {
         m_motor.setVelocity(targetVelocity);
     }
 
+    public void setHigh()
+    {
+        setState(HighVelocity, true);
+    }
+    public void setLow()
+    {
+        setState(LowVelocity, true);
+    }
+
+    public void setStop()
+    {
+        setState(0, true);
+    }
     public boolean reachTargetVelocity(){
         double currentVelocity = getVelocity();
         if (Math.abs(m_targetVelocity) < 0.01)
