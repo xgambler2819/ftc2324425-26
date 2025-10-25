@@ -13,6 +13,20 @@ public class Shooter extends SubsystemBase {
     private MotorEx m_motor;
 
     private Servo m_led;
+    /* Color Guide:
+        Black – 0
+        Red – 0.279
+        Orange – 0.333
+        Gold – 0.357
+        Yellow – 0.388
+        Sage – 0.444
+        Green – 0.500
+        Azure – 0.555
+        Blue – 0.611
+        Indigo – 0.666
+        Violet – 0.722
+        White – 1
+     */
     private Telemetry m_telemetry;
 
     private int m_targetVelocity = 0;
