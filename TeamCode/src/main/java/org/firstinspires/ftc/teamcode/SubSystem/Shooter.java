@@ -19,7 +19,7 @@ public class Shooter extends SubsystemBase {
         m_motor = new MotorEx(hmap, "ballroller", Motor.GoBILDA.BARE);
         m_motor.setRunMode(MotorEx.RunMode.VelocityControl);
         m_motor.setVeloCoefficients(20, 0 , 0);
-        m_motor.setFeedforwardCoefficients(1.0, 0.5, 0.1);
+        m_motor.setFeedforwardCoefficients(0, 0.7, 0);
         m_motor.setInverted(true);
 
         m_targetVelocity = 0;
@@ -37,23 +37,21 @@ public class Shooter extends SubsystemBase {
         double currentVelocity = getVelocity();
         if (Math.abs(m_targetVelocity) < 0.01)
         {
-            return Math.abs(currentVelocity) < 0.03;
+            return Math.abs(currentVelocity) < 0.1;
         }
-        return (Math.abs(currentVelocity - m_targetVelocity) / m_targetVelocity) < 0.03;
+        return (Math.abs(currentVelocity - m_targetVelocity) / m_targetVelocity) < 0.12;
     }       
 
     public void periodic() {
         if(m_keepVelocity){
             m_motor.setVelocity(m_targetVelocity);
         }
-        /*
-        m_telemetry.addData("Shooter Velocity", getVelocity());
+        m_telemetry.addData("Velocity", "%.2f", getVelocity());
         m_telemetry.addData("Target", m_targetVelocity);
         m_telemetry.addData("Keep", m_keepVelocity);
         m_telemetry.addData("Reach", reachTargetVelocity());
 
         m_telemetry.update();
-        */
     }
     private double getVelocity(){
         double velocity = m_motor.getVelocity();
