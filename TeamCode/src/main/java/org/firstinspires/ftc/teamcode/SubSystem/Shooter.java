@@ -53,6 +53,7 @@ public class Shooter extends SubsystemBase {
 
         m_telemetry.update();
     }
+
     private double getVelocity(){
         double velocity = m_motor.getVelocity();
         return velocity;
