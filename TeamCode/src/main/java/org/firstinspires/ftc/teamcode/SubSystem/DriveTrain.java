@@ -29,6 +29,10 @@ public class DriveTrain extends SubsystemBase {
         m_telemetry.addData("forward", forwardSpeed);
         m_telemetry.addData("turn", turnSpeed);
     }
+
+    public void stop() {
+        m_drive.stop();
+    }
 }
 
 

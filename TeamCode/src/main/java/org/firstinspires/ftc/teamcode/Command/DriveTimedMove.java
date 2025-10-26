@@ -10,15 +10,22 @@ import java.util.function.DoubleSupplier;
  * A command to drive the robot with joystick input (passed in as {@link DoubleSupplier}s). Written
  * explicitly for pedagogical purposes.
  */
-public class DriveAutoBackward extends CommandBase {
+public class DriveTimedMove extends CommandBase {
 
     private final DriveTrain m_drive;
-    private static final long DURATION = 3000;
+    private final double m_strafe;
+    private final double m_forward;
+    private final double m_turn;
+    private final long m_duration;
+
     private long startTime;
-    private double m_strafe;
-    public DriveAutoBackward(DriveTrain subsystem, double strafe) {
-        m_drive = subsystem;
+
+    public DriveTimedMove(DriveTrain driveTrain, double strafe, double forward, double turn, long duration) {
+        m_drive = driveTrain;
         m_strafe = strafe;
+        m_forward = forward;
+        m_turn = turn;
+        m_duration = duration;
         addRequirements(m_drive);
     }
 
@@ -28,15 +35,15 @@ public class DriveAutoBackward extends CommandBase {
     }
     @Override
     public void execute() {
-        m_drive.driveRobotCentric(m_strafe, .7, 0);
+        m_drive.driveRobotCentric(m_strafe, m_forward, m_turn);
     }
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() - startTime > DURATION;
+        return System.currentTimeMillis() - startTime > m_duration;
     }
 
     @Override
     public void end(boolean interrupted) {
-        m_drive.driveRobotCentric(0,0,0);
+        m_drive.stop();
     }
 }
