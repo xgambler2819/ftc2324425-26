@@ -18,4 +18,7 @@ public class ShooterTargetLow extends CommandBase {
     public void initialize() {
         m_shooter.setLow();
     }
+
+    @Override
+    public boolean isFinished() { return true;}
 }

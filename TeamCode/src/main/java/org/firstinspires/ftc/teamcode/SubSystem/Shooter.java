@@ -82,7 +82,11 @@ public class Shooter extends SubsystemBase {
         setState(-1*LowVelocity, true);
     }
 
-    public boolean reachTargetVelocity(){
+    public boolean getReachTarget() {
+        return m_reachTarget;
+    }
+
+    private boolean checkReachTarget(){
         double currentVelocity = getVelocity();
         m_reachTarget = false;
         if (Math.abs(m_targetVelocity) < 0.01)
@@ -101,10 +105,11 @@ public class Shooter extends SubsystemBase {
         if(m_keepVelocity){
             m_motor.setVelocity(m_targetVelocity);
         }
+        checkReachTarget();
         m_telemetry.addData("Velocity", "%.2f", getVelocity());
         m_telemetry.addData("Target", m_targetVelocity);
         m_telemetry.addData("Keep", m_keepVelocity);
-        m_telemetry.addData("Reach", reachTargetVelocity());
+        m_telemetry.addData("Reach", getReachTarget());
 
         m_telemetry.update();
 

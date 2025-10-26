@@ -16,4 +16,7 @@ public class ShooterTargetHigh extends CommandBase {
     public void initialize() {
         m_shooter.setHigh();
     }
+
+    @Override
+    public boolean isFinished() { return true;}
 }

@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.SubSystem.Indexer;
 import org.firstinspires.ftc.teamcode.SubSystem.Shooter;
 
 
-@Autonomous(name = "AutoRed")
-public class AutoRed extends CommandOpMode {
+@Autonomous(name = "AutoBlue")
+public class AutoBlue extends CommandOpMode {
 
     private Indexer m_indexer;
     private Shooter m_shooter;
@@ -42,11 +42,11 @@ public class AutoRed extends CommandOpMode {
 
         SequentialCommandGroup autoSequences = new SequentialCommandGroup(
                 new ShooterTargetLow(m_shooter),
-                new WaitCommand(3000),
+                new WaitCommand(2000),
                 new IndexerRollForward(m_indexer),
-                new WaitCommand(9000),
+                new WaitCommand(8000),
                 new IndexerStop(m_indexer),
-                new DriveAutoBackward(m_drivetrain, -0.3)
+                new DriveAutoBackward(m_drivetrain, 0.5)
         );
         schedule(autoSequences);
         while (!isStopRequested() && opModeIsActive())

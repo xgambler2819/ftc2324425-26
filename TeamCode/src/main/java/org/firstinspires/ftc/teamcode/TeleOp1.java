@@ -39,7 +39,7 @@ public class TeleOp1 extends CommandOpMode {
         m_drivetrain = new DriveTrain(hardwareMap, telemetry);
         m_driveDefault = new DriveDefault(m_drivetrain, m_gamepad1);
 
-        m_indexer = new Indexer(hardwareMap);
+        m_indexer = new Indexer(hardwareMap,telemetry);
 
         Button pad2_start = new GamepadButton(m_gamepad2, GamepadKeys.Button.START);
         pad2_start.whenPressed(new IndexerRollForward(m_indexer));

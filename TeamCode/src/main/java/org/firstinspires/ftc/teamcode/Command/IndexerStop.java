@@ -18,4 +18,7 @@ public class IndexerStop extends CommandBase {
     public void initialize () {
         m_indexer.Stop();
     }
+
+    @Override
+    public boolean isFinished() { return true;}
 }
