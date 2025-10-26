@@ -24,7 +24,7 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public void driveRobotCentric(double strafeSpeed, double forwardSpeed, double turnSpeed) {
-        m_drive.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed);
+        m_drive.driveRobotCentric(strafeSpeed, forwardSpeed, turnSpeed, true);
         m_telemetry.addData("strafe", strafeSpeed);
         m_telemetry.addData("forward", forwardSpeed);
         m_telemetry.addData("turn", turnSpeed);

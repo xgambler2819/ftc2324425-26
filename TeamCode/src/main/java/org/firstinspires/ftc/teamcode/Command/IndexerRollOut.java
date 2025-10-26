@@ -5,12 +5,12 @@ import com.arcrobotics.ftclib.command.CommandBase;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.SubSystem.Indexer;
 
-public class IndexerRollBack extends CommandBase {
+public class IndexerRollOut extends CommandBase {
     private Indexer m_indexer;
     private long startTime;
     private static final long DURATION = 1000;
 
-    public IndexerRollBack(Indexer indexer) {
+    public IndexerRollOut(Indexer indexer) {
         m_indexer = indexer;
         addRequirements(indexer);
     }
@@ -18,7 +18,7 @@ public class IndexerRollBack extends CommandBase {
     @Override
     public void initialize () {
         startTime = System.currentTimeMillis();
-        m_indexer.RollBack();
+        m_indexer.RollOut();
     }
 
     @Override

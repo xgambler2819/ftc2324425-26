@@ -13,6 +13,14 @@ public class Shooter extends SubsystemBase {
     private MotorEx m_motor;
 
     private Servo m_led;
+    final double Color_Red = 0.279;
+    final double Color_Green = 0.500;
+    final double Color_Yellow = 0.388;
+
+    final double Color_Blue = 0.611;
+    final double Color_Azure = 0.555;
+    final double Color_White = 1;
+    boolean m_reachTarget = false;
     /* Color Guide:
         Black – 0
         Red – 0.279
@@ -33,7 +41,7 @@ public class Shooter extends SubsystemBase {
     boolean m_keepVelocity = false;
 
     final int HighVelocity = 1200;
-    final int LowVelocity = 1000;
+    final int LowVelocity = 1050;
     public Shooter(final HardwareMap hmap, final Telemetry telemetry) {
         m_telemetry = telemetry;
         m_motor = new MotorEx(hmap, "ballroller", Motor.GoBILDA.BARE);
@@ -68,14 +76,26 @@ public class Shooter extends SubsystemBase {
     {
         setState(0, true);
     }
+
+    public void setBack()
+    {
+        setState(-1*LowVelocity, true);
+    }
+
     public boolean reachTargetVelocity(){
         double currentVelocity = getVelocity();
+        m_reachTarget = false;
         if (Math.abs(m_targetVelocity) < 0.01)
         {
-            return Math.abs(currentVelocity) < 0.1;
+            m_reachTarget = Math.abs(currentVelocity) < 0.1;
         }
-        return (Math.abs(currentVelocity - m_targetVelocity) / m_targetVelocity) < 0.12;
-    }       
+        else 
+        {
+            m_reachTarget = Math.abs((currentVelocity - m_targetVelocity) / m_targetVelocity) < 0.125;
+        }
+        return m_reachTarget;
+    }     
+
 
     public void periodic() {
         if(m_keepVelocity){
@@ -87,6 +107,21 @@ public class Shooter extends SubsystemBase {
         m_telemetry.addData("Reach", reachTargetVelocity());
 
         m_telemetry.update();
+
+        if (m_reachTarget)
+        {
+            if (m_targetVelocity == HighVelocity) {
+                m_led.setPosition(Color_Blue);
+            }
+            else if (m_targetVelocity == LowVelocity) {
+                m_led.setPosition(Color_Green);
+            }
+            else {
+                m_led.setPosition(Color_White);
+            }
+        } else {
+            m_led.setPosition(Color_Red);
+        }
     }
 
     private double getVelocity(){
