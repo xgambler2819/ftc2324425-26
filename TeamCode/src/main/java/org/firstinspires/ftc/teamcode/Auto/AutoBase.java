@@ -30,11 +30,6 @@ public class AutoBase extends CommandOpMode {
         m_indexer = new Indexer(hardwareMap,telemetry);
         m_shooter = new Shooter(hardwareMap, telemetry);
         register(m_drivetrain, m_indexer, m_shooter);
-    }
-    @Override
-    public void runOpMode() throws InterruptedException{
-        initialize();
-        waitForStart();
 
         double turn = 0.5;
         if (m_isRed) { turn = -0.5;}
@@ -43,7 +38,7 @@ public class AutoBase extends CommandOpMode {
                 new ShooterTargetLow(m_shooter),
                 new ShooterReachTarget(m_shooter, telemetry),
                 new IndexerRollForward(m_indexer),
-                new WaitCommand(9000),
+                new WaitCommand(8000),
                 new ShooterStop(m_shooter),
                 new DriveAutoBackward(m_drivetrain),
                 new DriveAutoTurn(m_drivetrain, turn),
@@ -52,10 +47,5 @@ public class AutoBase extends CommandOpMode {
                 new IndexerStop(m_indexer)
         );
         schedule(autoSequences);
-        while (!isStopRequested() && opModeIsActive())
-        {
-            run();
-        }
-        reset();
     }
  }

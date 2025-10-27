@@ -15,10 +15,9 @@ public class Shooter extends SubsystemBase {
     private Servo m_led;
     final double Color_Red = 0.279;
     final double Color_Green = 0.500;
-    final double Color_Yellow = 0.388;
 
     final double Color_Blue = 0.611;
-    final double Color_Azure = 0.555;
+    final double Color_Indigo = 0.666;
     final double Color_White = 1;
     boolean m_reachTarget = false;
     /* Color Guide:

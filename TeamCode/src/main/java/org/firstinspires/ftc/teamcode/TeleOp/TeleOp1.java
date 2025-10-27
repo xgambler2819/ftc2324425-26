@@ -42,6 +42,7 @@ public class TeleOp1 extends CommandOpMode {
         pad2_lb.whenPressed(new IndexerRollOut(m_indexer));
 
         m_shooter = new Shooter(hardwareMap, telemetry);
+        m_shooter.setStop();
 
         Button pad2_y = new GamepadButton(m_gamepad2, GamepadKeys.Button.Y);
         pad2_y.whenPressed(new ShooterTargetHigh(m_shooter));
