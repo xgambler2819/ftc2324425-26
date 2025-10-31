@@ -46,7 +46,12 @@ public class AutoBase extends CommandOpMode {
                 new IndexerStop(m_indexer),
                 new DriveAutoBackward(m_drivetrain),
                 new DriveAutoTurn(m_drivetrain, turn),
-                new DriveAutoForward(m_drivetrain),
+                new ParallelCommandGroup(
+                    new DriveAutoForward(m_drivetrain),
+                    new SequentialCommandGroup(
+                        new WaitCommand(2000),
+                        new IndexerStepUp(m_indexer))
+                )
         );
         schedule(autoSequences);
     }
