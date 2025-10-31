@@ -11,6 +11,6 @@ import java.util.function.DoubleSupplier;
  */
 public class DriveAutoTurn extends DriveTimedMove {
     public DriveAutoTurn(DriveTrain driveTrain, double turn) {
-        super(driveTrain, 0, 0, turn, 1200);
+        super(driveTrain, 0, 0, turn, 1100);
     }
 }

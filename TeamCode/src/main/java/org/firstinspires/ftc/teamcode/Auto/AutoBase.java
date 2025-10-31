@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.SubSystem.Shooter;
 
 public class AutoBase extends CommandOpMode {
     private Indexer m_indexer;
+    private Intake m_intake;
     private Shooter m_shooter;
     private DriveTrain m_drivetrain;
 
@@ -28,8 +29,9 @@ public class AutoBase extends CommandOpMode {
     public void initialize() {
         m_drivetrain = new DriveTrain(hardwareMap, telemetry);
         m_indexer = new Indexer(hardwareMap,telemetry);
+        m_intake = new Intake(hardwareMap, telemetry);
         m_shooter = new Shooter(hardwareMap, telemetry);
-        register(m_drivetrain, m_indexer, m_shooter);
+        register(m_drivetrain, m_intake, m_indexer, m_shooter);
 
         double turn = 0.5;
         if (m_isRed) { turn = -0.5;}
@@ -37,14 +39,14 @@ public class AutoBase extends CommandOpMode {
         SequentialCommandGroup autoSequences = new SequentialCommandGroup(
                 new ShooterTargetLow(m_shooter),
                 new ShooterReachTarget(m_shooter, telemetry),
-                new IndexerRollForward(m_indexer),
+                new IndexerUp(m_indexer),
+                new IntakeRollIn(m_intake),
                 new WaitCommand(8000),
                 new ShooterStop(m_shooter),
+                new IndexerStop(m_indexer),
                 new DriveAutoBackward(m_drivetrain),
                 new DriveAutoTurn(m_drivetrain, turn),
-                new IndexerRollForward(m_indexer),
                 new DriveAutoForward(m_drivetrain),
-                new IndexerStop(m_indexer)
         );
         schedule(autoSequences);
     }

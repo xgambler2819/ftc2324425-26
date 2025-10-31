@@ -11,6 +11,6 @@ import java.util.function.DoubleSupplier;
  */
 public class DriveAutoForward extends DriveTimedMove {
     public DriveAutoForward(DriveTrain driveTrain) {
-        super(driveTrain, 0, -0.6, 0, 1500);
+        super(driveTrain, 0, -0.5, 0, 2500);
     }
 }
