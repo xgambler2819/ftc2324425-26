@@ -34,8 +34,8 @@ public class AutoBase extends CommandOpMode {
         m_shooter.setStop();
         register(m_drivetrain, m_intake, m_indexer, m_shooter);
 
-        double turn = 0.5;
-        if (m_isRed) { turn = -0.5;}
+        double turn = m_isRed ? -.5 : 0.5;
+        double turnAngle = m_isRed ? 50 : -50;
 
         SequentialCommandGroup autoSequences = new SequentialCommandGroup(
                 new ShooterTargetLow(m_shooter),
@@ -47,6 +47,7 @@ public class AutoBase extends CommandOpMode {
                 new IndexerStop(m_indexer),
                 new DriveAutoBackward(m_drivetrain),
                 new DriveAutoTurn(m_drivetrain, turn),
+                //new DriveTurnTo(m_drivetrain, telemetry, turn, 1200),
                 new ParallelCommandGroup(
                     new DriveAutoForward(m_drivetrain),
                     new SequentialCommandGroup(
