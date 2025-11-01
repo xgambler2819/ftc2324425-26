@@ -31,6 +31,7 @@ public class AutoBase extends CommandOpMode {
         m_indexer = new Indexer(hardwareMap,telemetry);
         m_intake = new Intake(hardwareMap, telemetry);
         m_shooter = new Shooter(hardwareMap, telemetry);
+        m_shooter.setStop();
         register(m_drivetrain, m_intake, m_indexer, m_shooter);
 
         double turn = 0.5;
