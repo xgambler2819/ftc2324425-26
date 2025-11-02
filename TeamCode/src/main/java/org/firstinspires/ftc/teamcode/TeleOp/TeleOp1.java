@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
 import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -39,28 +41,29 @@ public class TeleOp1 extends CommandOpMode {
         register(m_drivetrain, m_intake, m_indexer, m_shooter);
         m_drivetrain.setDefaultCommand(m_driveDefault);
 
-        Button pad2_dpad_up = new GamepadButton(m_gamepad2, GamepadKeys.Button.dpad_UP);
+        Button pad2_dpad_up = new GamepadButton(m_gamepad2, GamepadKeys.Button.DPAD_UP);
         pad2_dpad_up.whenPressed(new IndexerStepUp(m_indexer));
-        Button pad2_dpad_down = new GamepadButton(m_gamepad2, GamepadKeys.Button.dpad_DOWN);
+        Button pad2_dpad_down = new GamepadButton(m_gamepad2, GamepadKeys.Button.DPAD_DOWN);
         pad2_dpad_down.whenPressed(new IndexerStepDown(m_indexer));
 
-        Button pad2_dpad_right = new GamepadButton(m_gamepad2, GamepadKeys.Button.dpad_RIGHT);
+        Button pad2_dpad_right = new GamepadButton(m_gamepad2, GamepadKeys.Button.DPAD_RIGHT);
         pad2_dpad_right.whenPressed(new IntakeRollIn(m_intake));
-        Button pad2_dpad_left = new GamepadButton(m_gamepad2, GamepadKeys.Button.dpad_LEFT);
+        Button pad2_dpad_left = new GamepadButton(m_gamepad2, GamepadKeys.Button.DPAD_LEFT);
         pad2_dpad_left.whenPressed(new IntakeRollOut(m_intake));
 
         Button pad2_start = new GamepadButton(m_gamepad2, GamepadKeys.Button.START);
-        pad2_start.whenPressed(new CommandGroup(IndexerUp(m_indexer), IntakeRollIn(m_intake)));
+        pad2_start.whenPressed(new ParallelCommandGroup(new IndexerUp(m_indexer), new IntakeRollIn(m_intake)));
         Button pad2_back = new GamepadButton(m_gamepad2, GamepadKeys.Button.BACK);
-        pad2_back.whenPressed(new CommandGroup(new IndexerStop(m_indexer), IntakeStop(m_intake)));
+        pad2_back.whenPressed(new ParallelCommandGroup(new IndexerStop(m_indexer), new IntakeStop(m_intake)));
 
-        Button pad2_y = new GamepadButton(m_gamepad2, GamepadKeys.Button.Y);
-        pad2_y.whenPressed(new ShooterBack(m_shooter));
+
         Button pad2_a = new GamepadButton(m_gamepad2, GamepadKeys.Button.A);
         pad2_a.whenPressed(new ShooterTargetLow(m_shooter));
-        Button pad2_b = new GamepadButton(m_gamepad2, GamepadKeys.Button.B);
-        pad2_b.whenPressed(new ShooterStop(m_shooter));
         Button pad2_x = new GamepadButton(m_gamepad2, GamepadKeys.Button.X);
         pad2_x.whenPressed(new ShooterTargetHigh(m_shooter));
+        Button pad2_b = new GamepadButton(m_gamepad2, GamepadKeys.Button.B);
+        pad2_b.whenPressed(new ShooterBack(m_shooter));
+        Button pad2_y = new GamepadButton(m_gamepad2, GamepadKeys.Button.Y);
+        pad2_y.whenPressed(new ShooterStop(m_shooter));
     }
  }

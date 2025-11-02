@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode.Command;
 
 import com.arcrobotics.ftclib.command.CommandBase;
+import org.firstinspires.ftc.teamcode.SubSystem.Intake;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.SubSystem.Indexer;
 
 public class IntakeRollOut extends CommandBase {
     private Intake m_intake;
@@ -20,6 +19,6 @@ public class IntakeRollOut extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return true
+        return true;
     }
 }

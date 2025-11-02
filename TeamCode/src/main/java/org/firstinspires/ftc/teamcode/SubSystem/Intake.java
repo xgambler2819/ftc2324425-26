@@ -10,12 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Intake extends SubsystemBase {
     private CRServo m_servo;
-    private int m_servoDirection = -1;
     private DcMotor m_intake;
-
-    final int ForwardPower = 1;
-    final int BackwardPower = -1;
-    final int StopPower = 0;
 
     Telemetry m_telemetry;
 
@@ -31,23 +26,23 @@ public class Intake extends SubsystemBase {
     }
 
     public void RollOut() {
-        m_servoPower = BackwardPower * m_servoDirection;
+        m_servoPower = 1;
         m_servo.setPower(m_servoPower);
-        m_intakePower = BackwardPower;
+        m_intakePower = -1;
         m_intake.setPower(m_intakePower);
     }
 
     public void RollIn() {
-        m_servoPower = ForwardPower * m_servoDirection;
+        m_servoPower = -1;
         m_servo.setPower(m_servoPower);
-        m_intakePower = ForwardPower;
+        m_intakePower = 1;
         m_intake.setPower(m_intakePower);
     }
 
     public void Stop() {
-        m_servoPower = StopPower;
+        m_servoPower = 0;
         m_servo.setPower(m_servoPower);
-        m_intakePower = StopPower;
+        m_intakePower = 0;
         m_intake.setPower(m_intakePower);
     }
 

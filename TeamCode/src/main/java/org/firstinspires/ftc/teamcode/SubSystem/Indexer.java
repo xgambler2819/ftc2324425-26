@@ -3,15 +3,11 @@ package org.firstinspires.ftc.teamcode.SubSystem;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.CRServo;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Indexer extends SubsystemBase {
     private CRServo m_servo;
-    private int m_servoDirection = 1;
-
     Telemetry m_telemetry;
     double m_power = 0;
 
@@ -22,15 +18,13 @@ public class Indexer extends SubsystemBase {
     }
 
     public void RollDown() {
-        final int BackwardPower = -1;
-        m_power = BackwardPower * m_servoDirection;
+        m_power = 1;
         m_servo.setPower(m_power);
     }
 
 
     public void RollUp() {
-        final int ForwardPower = 1;
-        m_power = ForwardPower * m_servoDirection;
+        m_power = -1;
         m_servo.setPower(m_power);
     }
 

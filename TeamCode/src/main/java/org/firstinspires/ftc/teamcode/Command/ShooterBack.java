@@ -19,9 +19,10 @@ public class ShooterBack extends CommandBase {
 
     @Override
     public void initialize() {
+        startTime = System.currentTimeMillis();
         m_shooter.setBack();
     }
-/*
+
     @Override
     public boolean isFinished() {
         return System.currentTimeMillis() - startTime > DURATION;
@@ -31,6 +32,4 @@ public class ShooterBack extends CommandBase {
     public void end(boolean interrupted) {
         m_shooter.setStop();
     }
-
- */
 }
