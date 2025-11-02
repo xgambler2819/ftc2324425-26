@@ -11,7 +11,6 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Shooter extends SubsystemBase {
     private MotorEx m_motor;
-
     private Servo m_led;
     final double Color_Red = 0.279;
     final double Color_Green = 0.500;
@@ -35,7 +34,6 @@ public class Shooter extends SubsystemBase {
         White – 1
      */
     private Telemetry m_telemetry;
-
     private int m_targetVelocity = 0;
     boolean m_keepVelocity = false;
 

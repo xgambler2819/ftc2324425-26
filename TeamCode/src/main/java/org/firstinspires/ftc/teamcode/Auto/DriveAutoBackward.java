@@ -11,6 +11,6 @@ import java.util.function.DoubleSupplier;
  */
 public class DriveAutoBackward extends DriveTimedMove {
     public DriveAutoBackward(DriveTrain driveTrain) {
-       super(driveTrain, 0, .7, 0, 1900);
+       super(driveTrain, 0, .7, 0, 1800);
     }
 }

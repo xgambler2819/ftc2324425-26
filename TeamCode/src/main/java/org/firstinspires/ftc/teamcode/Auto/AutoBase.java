@@ -34,7 +34,15 @@ public class AutoBase extends CommandOpMode {
         m_shooter.setStop();
         register(m_drivetrain, m_intake, m_indexer, m_shooter);
 
-        double turn = m_isRed ? -.5 : 0.5;
+
+    }
+
+    @Override
+    public void runOpMode() throws InterruptedException{
+        initialize();
+        waitForStart();
+
+        double turn = m_isRed ? -.45 : 0.45;
         double turnAngle = m_isRed ? 50 : -50;
 
         SequentialCommandGroup autoSequences = new SequentialCommandGroup(
@@ -56,5 +64,12 @@ public class AutoBase extends CommandOpMode {
                 )
         );
         schedule(autoSequences);
+
+        while (!isStopRequested() && opModeIsActive())
+        {
+            run();
+        }
+        reset();
     }
+
  }
