@@ -37,11 +37,11 @@ public class Shooter extends SubsystemBase {
     private int m_targetVelocity = 0;
     boolean m_keepVelocity = false;
 
-    final int HighVelocity = 1200;
-    final int LowVelocity = 1050;
+    final int HighVelocity = 1300;
+    final int LowVelocity = 1100;
     public Shooter(final HardwareMap hmap, final Telemetry telemetry) {
         m_telemetry = telemetry;
-        m_motor = new MotorEx(hmap, "ballroller", Motor.GoBILDA.BARE);
+        m_motor = new MotorEx(hmap, "shooter", Motor.GoBILDA.BARE);
         m_led = hmap.get(Servo.class, "led");
         m_led.setPosition(0.279);
         m_motor.setRunMode(MotorEx.RunMode.VelocityControl);

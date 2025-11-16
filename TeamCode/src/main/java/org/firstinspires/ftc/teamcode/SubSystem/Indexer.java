@@ -1,42 +1,43 @@
 package org.firstinspires.ftc.teamcode.SubSystem;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.qualcomm.robotcore.hardware.CRServo;
-
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Indexer extends SubsystemBase {
-    private CRServo m_servo;
+    private DcMotor m_indexer;
     Telemetry m_telemetry;
-    double m_power = 0;
+    double m_indexerPower = 0;
+    final double IndexerPower = 0.75;
 
     public Indexer(final HardwareMap hmap, final Telemetry telemetry) {
-        m_servo = hmap.get(CRServo.class, "upperroller");
-        m_telemetry =telemetry;
+        m_indexer = hmap.get(DcMotor.class, "indexer");
+        m_indexer.setDirection(DcMotorSimple.Direction.REVERSE);
+        m_telemetry = telemetry;
         Stop();
     }
-
-    public void RollDown() {
-        m_power = 1;
-        m_servo.setPower(m_power);
-    }
-
-
-    public void RollUp() {
-        m_power = -1;
-        m_servo.setPower(m_power);
+    public void move(double power) {
+        m_indexerPower = power;
+        m_indexer.setPower(m_indexerPower);
     }
 
     public void Stop() {
-        final int StopPower = 0;
-        m_power = StopPower;
-        m_servo.setPower(m_power);
+        m_indexerPower = 0;
+        m_indexer.setPower(m_indexerPower);
+    }
+    public void RollUp() {
+        move(IndexerPower);
+    }
+    public void RollDown() {
+        move(-IndexerPower);
     }
 
     @Override
     public void periodic() {
-        m_telemetry.addData("Indexer:", "%.2f", m_power);
+        m_telemetry.addData("Indexer:", "%.2f", m_indexerPower);
     }
 }
 

@@ -4,26 +4,24 @@ import com.arcrobotics.ftclib.command.CommandBase;
 
 import org.firstinspires.ftc.teamcode.SubSystem.Indexer;
 
-public class IndexerStepDown extends CommandBase {
+public class IndexerMove extends CommandBase {
     private Indexer m_indexer;
 
-    private long m_startTime;
-
-    public IndexerStepDown(Indexer indexer) {
+    final double IndexerMovePower = 0.75;
+    final int m_direction;
+    public IndexerMove(Indexer indexer, int direction) {
         m_indexer = indexer;
+        m_direction = direction;
         addRequirements(m_indexer);
     }
 
     @Override
     public void initialize () {
-        m_indexer.RollDown();
-        m_startTime = System.currentTimeMillis();
+        m_indexer.move(IndexerMovePower * m_direction);
     }
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() - m_startTime > 600;
+        return true;
     }
 }
-
-
