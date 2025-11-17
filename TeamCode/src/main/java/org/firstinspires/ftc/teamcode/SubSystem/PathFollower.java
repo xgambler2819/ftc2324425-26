@@ -11,18 +11,20 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
 
 public class PathFollower extends SubsystemBase {
-
+    private HardwareMap m_hardwareMap;
     private Follower m_follower;
     private Telemetry m_telemetry;
-    public PathFollower(final HardwareMap hmap, final Telemetry telemetry) {
-        m_follower = Constants.createFollower(hmap);
+    public PathFollower(final HardwareMap hardwareMap, final Telemetry telemetry) {
+        m_hardwareMap = hardwareMap;
         m_telemetry = telemetry;
     }
 
-    public void startFollowPath(Pose startPose, Pose endPose){
+    public void startFollowPath(Pose startPose, Pose endPose, double maxPower){
+        m_follower = Constants.createFollower(m_hardwareMap);
         Path path = new Path(new BezierLine(startPose, endPose));
         path.setLinearHeadingInterpolation(startPose.getHeading(), endPose.getHeading());
         m_follower.setStartingPose(startPose);
+        m_follower.setMaxPower(maxPower);
         m_follower.followPath(path);
     }
 

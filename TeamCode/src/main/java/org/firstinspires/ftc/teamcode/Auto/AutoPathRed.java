@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.Auto;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import org.firstinspires.ftc.teamcode.SubSystem.PathFollower;
 import org.firstinspires.ftc.teamcode.SubSystem.Indexer;
@@ -47,7 +48,17 @@ public class AutoPathRed extends CommandOpMode {
                 new ShooterStop(m_shooter),
                 new IndexerMove(m_indexer, 0),
                 new IntakeStop(m_intake),*/
-                new GoToPickup1(m_follower)/* ,
+                new GoToPickup1(m_follower),
+                new IntakeRollIn(m_intake),
+
+                new ParallelCommandGroup(
+                        new GoToPickup2(m_follower),
+                        new SequentialCommandGroup(
+                                new WaitCommand(2000),
+                                new IndexerStepUp(m_indexer))
+                )/*
+
+
                 new IntakeRollIn(m_intake),
                 new IndexerStepUp(m_indexer),
                 new IntakeStop(m_intake)*/

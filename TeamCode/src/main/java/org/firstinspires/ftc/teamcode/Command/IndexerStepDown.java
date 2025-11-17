@@ -22,7 +22,12 @@ public class IndexerStepDown extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() - m_startTime > 600;
+        return System.currentTimeMillis() - m_startTime > 500;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        m_indexer.Stop();
     }
 }
 
