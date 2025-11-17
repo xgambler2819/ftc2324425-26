@@ -16,7 +16,7 @@ public class Intake extends SubsystemBase {
 
 
     double m_intakePower = 0;
-    final double IntakePower = 0.75;
+    final double IntakePower = -1;
 
     public Intake(final HardwareMap hmap, final Telemetry telemetry) {
         m_intake = hmap.get(DcMotor.class, "intake");

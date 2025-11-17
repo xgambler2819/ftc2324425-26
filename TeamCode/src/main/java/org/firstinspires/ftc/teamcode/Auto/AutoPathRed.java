@@ -1,42 +1,37 @@
 package org.firstinspires.ftc.teamcode.Auto;
-
-import com.arcrobotics.ftclib.command.CommandOpMode;
-
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
-
-import org.firstinspires.ftc.teamcode.Command.*;
-import org.firstinspires.ftc.teamcode.Command.ShooterReachTarget;
-import org.firstinspires.ftc.teamcode.Command.ShooterStop;
-import org.firstinspires.ftc.teamcode.Command.ShooterTargetLow;
-import org.firstinspires.ftc.teamcode.SubSystem.DriveTrain;
+import com.arcrobotics.ftclib.command.ParallelCommandGroup;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import org.firstinspires.ftc.teamcode.SubSystem.PathFollower;
 import org.firstinspires.ftc.teamcode.SubSystem.Indexer;
 import org.firstinspires.ftc.teamcode.SubSystem.Shooter;
 import org.firstinspires.ftc.teamcode.SubSystem.Intake;
 
-public class AutoBase extends CommandOpMode {
+import com.arcrobotics.ftclib.command.CommandOpMode;
+import com.arcrobotics.ftclib.command.SequentialCommandGroup;
+import com.arcrobotics.ftclib.command.WaitCommand;
 
+import org.firstinspires.ftc.teamcode.Command.*;
+@Autonomous(name = "AutoPathRed")
+public class AutoPathRed extends CommandOpMode {
+    public AutoPathRed()
+    {
+    }
+
+    private PathFollower m_follower;
     private Intake m_intake;
     private Indexer m_indexer;
     private Shooter m_shooter;
-    private DriveTrain m_drivetrain;
 
-    private final boolean m_isRed;
-    public AutoBase(boolean isRed)
-    {
-        m_isRed = isRed;
-    }
+
     @Override
     public void initialize() {
-        m_drivetrain = new DriveTrain(hardwareMap, telemetry);
+        m_follower = new PathFollower(hardwareMap, telemetry);
 
         m_intake = new Intake(hardwareMap, telemetry);
         m_indexer = new Indexer(hardwareMap, telemetry);
         m_shooter = new Shooter(hardwareMap, telemetry);
         m_shooter.setStop();
-        register(m_drivetrain, m_intake, m_indexer, m_shooter);
-
-
+        register(m_follower, m_intake, m_indexer, m_shooter);
     }
 
     @Override
@@ -44,22 +39,29 @@ public class AutoBase extends CommandOpMode {
         initialize();
         waitForStart();
 
-        double turn = m_isRed ? -.45 : 0.45;
-        double turnAngle = m_isRed ? 50 : -50;
-
         SequentialCommandGroup autoSequences = new SequentialCommandGroup(
-                new ShooterTargetLow(m_shooter),
+               /* new ShooterTargetLow(m_shooter),
                 new ShooterReachTarget(m_shooter, telemetry),
-
                 new IntakeRollIn(m_intake),
                 new IndexerMove(m_indexer, 1),
                 new WaitCommand(3000),
                 new ShooterStop(m_shooter),
                 new IndexerMove(m_indexer, 0),
+                new IntakeStop(m_intake),*/
+                new GoToPickup1(m_follower),
+                new IntakeRollIn(m_intake),
 
-                new DriveAutoBackward(m_drivetrain),
-                new DriveAutoTurn(m_drivetrain, turn),
-                new DriveAutoForward(m_drivetrain)
+                new ParallelCommandGroup(
+                        new GoToPickup2(m_follower),
+                        new SequentialCommandGroup(
+                                new WaitCommand(2000),
+                                new IndexerStepUp(m_indexer))
+                )/*
+
+
+                new IntakeRollIn(m_intake),
+                new IndexerStepUp(m_indexer),
+                new IntakeStop(m_intake)*/
         );
         schedule(autoSequences);
 
@@ -69,5 +71,4 @@ public class AutoBase extends CommandOpMode {
         }
         reset();
     }
-
  }
