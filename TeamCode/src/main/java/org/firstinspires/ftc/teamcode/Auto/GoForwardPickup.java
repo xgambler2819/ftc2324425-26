@@ -5,15 +5,15 @@ import com.pedropathing.geometry.Pose;
 
 import org.firstinspires.ftc.teamcode.SubSystem.PathFollower;
 
-public class GoToPickup2 extends CommandBase {
+public class GoForwardPickup extends CommandBase {
 
     private PathFollower m_follower;
     private final Pose m_startPoseRed = new Pose(24, 12, Math.toRadians(0));
-    private final Pose m_endPoseRed = new Pose(54, 12, Math.toRadians(0));
+    private final Pose m_endPoseRed = new Pose(56, 12, Math.toRadians(0));
     private final Pose m_startPose;
     private final Pose m_endPose;
 
-    public GoToPickup2(PathFollower follower) {
+    public GoForwardPickup(PathFollower follower) {
         m_follower = follower;
         m_startPose = m_startPoseRed;
         m_endPose = m_endPoseRed;
@@ -22,7 +22,7 @@ public class GoToPickup2 extends CommandBase {
    
     @Override
     public void initialize () {
-        m_follower.startFollowPath(m_startPose, m_endPose, 0.6);
+        m_follower.startFollowPath(m_startPose, m_endPose, 0.3);
     }
 
     @Override

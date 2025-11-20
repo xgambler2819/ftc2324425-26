@@ -17,6 +17,7 @@ public class PathFollower extends SubsystemBase {
     public PathFollower(final HardwareMap hardwareMap, final Telemetry telemetry) {
         m_hardwareMap = hardwareMap;
         m_telemetry = telemetry;
+        m_follower = Constants.createFollower(m_hardwareMap);
     }
 
     public void startFollowPath(Pose startPose, Pose endPose, double maxPower){

@@ -38,7 +38,7 @@ public class Shooter extends SubsystemBase {
     boolean m_keepVelocity = false;
 
     final int HighVelocity = 1300;
-    final int LowVelocity = 1100;
+    final int LowVelocity = 1120;
     public Shooter(final HardwareMap hmap, final Telemetry telemetry) {
         m_telemetry = telemetry;
         m_motor = new MotorEx(hmap, "shooter", Motor.GoBILDA.BARE);

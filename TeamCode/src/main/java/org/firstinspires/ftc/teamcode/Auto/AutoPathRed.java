@@ -39,29 +39,33 @@ public class AutoPathRed extends CommandOpMode {
         initialize();
         waitForStart();
 
-        SequentialCommandGroup autoSequences = new SequentialCommandGroup(
-               /* new ShooterTargetLow(m_shooter),
+        SequentialCommandGroup shoot = new SequentialCommandGroup(
+                new ShooterTargetLow(m_shooter),
                 new ShooterReachTarget(m_shooter, telemetry),
                 new IntakeRollIn(m_intake),
                 new IndexerMove(m_indexer, 1),
                 new WaitCommand(3000),
                 new ShooterStop(m_shooter),
                 new IndexerMove(m_indexer, 0),
-                new IntakeStop(m_intake),*/
-                new GoToPickup1(m_follower),
-                new IntakeRollIn(m_intake),
+                new IntakeStop(m_intake));
 
-                new ParallelCommandGroup(
-                        new GoToPickup2(m_follower),
-                        new SequentialCommandGroup(
-                                new WaitCommand(2000),
-                                new IndexerStepUp(m_indexer))
-                )/*
+        ParallelCommandGroup pickUpBalls = new ParallelCommandGroup(
+                new GoForwardPickup(m_follower),
+                new SequentialCommandGroup(
+                        new IntakeRollIn(m_intake),
+                        new WaitCommand(1000),
+                        new IndexerStepUp(m_indexer),
+                        new WaitCommand(200)));
 
-
-                new IntakeRollIn(m_intake),
-                new IndexerStepUp(m_indexer),
-                new IntakeStop(m_intake)*/
+        SequentialCommandGroup autoSequences = new SequentialCommandGroup(
+                shoot,
+                new GoTargetToRow1Start(m_follower),
+                pickUpBalls,
+                new GoRow1EndToTarget(m_follower),
+                new IndexerStepDown(m_indexer),
+                shoot,
+                new GoTargetToRow2Start(m_follower),
+                pickUpBalls
         );
         schedule(autoSequences);
 
