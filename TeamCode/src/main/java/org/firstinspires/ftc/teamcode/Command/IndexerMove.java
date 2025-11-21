@@ -7,17 +7,16 @@ import org.firstinspires.ftc.teamcode.SubSystem.Indexer;
 public class IndexerMove extends CommandBase {
     private Indexer m_indexer;
 
-    final double IndexerMovePower = 0.75;
-    final int m_direction;
-    public IndexerMove(Indexer indexer, int direction) {
+    final double m_power;
+    public IndexerMove(Indexer indexer, double power) {
         m_indexer = indexer;
-        m_direction = direction;
+        m_power = power;
         addRequirements(m_indexer);
     }
 
     @Override
     public void initialize () {
-        m_indexer.move(IndexerMovePower * m_direction);
+        m_indexer.move(m_power);
     }
 
     @Override

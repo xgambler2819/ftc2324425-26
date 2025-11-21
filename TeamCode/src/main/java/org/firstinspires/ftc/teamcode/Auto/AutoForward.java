@@ -33,7 +33,7 @@ public class AutoForward extends CommandOpMode {
         initialize();
         waitForStart();
         SequentialCommandGroup autoSequences = new SequentialCommandGroup(
-                new DriveTimedMove(m_drivetrain, 0 ,-0.5, 0,1000)
+                new DriveTimedMove(m_drivetrain, 0, -0.5, 0,1000)
         );
         schedule(autoSequences);
 

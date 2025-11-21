@@ -1,42 +1,32 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
-import com.arcrobotics.ftclib.command.CommandOpMode;
-
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
-
+import com.arcrobotics.ftclib.command.*;
 import org.firstinspires.ftc.teamcode.Command.*;
-import org.firstinspires.ftc.teamcode.Command.ShooterReachTarget;
-import org.firstinspires.ftc.teamcode.Command.ShooterStop;
-import org.firstinspires.ftc.teamcode.Command.ShooterTargetLow;
-import org.firstinspires.ftc.teamcode.SubSystem.DriveTrain;
-import org.firstinspires.ftc.teamcode.SubSystem.Indexer;
-import org.firstinspires.ftc.teamcode.SubSystem.Shooter;
-import org.firstinspires.ftc.teamcode.SubSystem.Intake;
+import org.firstinspires.ftc.teamcode.SubSystem.*;
+import com.pedropathing.geometry.Pose;
 
 public class AutoBase extends CommandOpMode {
 
+    private PathFollower m_follower;
     private Intake m_intake;
     private Indexer m_indexer;
     private Shooter m_shooter;
-    private DriveTrain m_drivetrain;
 
     private final boolean m_isRed;
+
     public AutoBase(boolean isRed)
     {
         m_isRed = isRed;
     }
     @Override
     public void initialize() {
-        m_drivetrain = new DriveTrain(hardwareMap, telemetry);
+        m_follower = new PathFollower(hardwareMap, telemetry);
 
         m_intake = new Intake(hardwareMap, telemetry);
         m_indexer = new Indexer(hardwareMap, telemetry);
         m_shooter = new Shooter(hardwareMap, telemetry);
         m_shooter.setStop();
-        register(m_drivetrain, m_intake, m_indexer, m_shooter);
-
-
+        register(m_follower, m_intake, m_indexer, m_shooter);
     }
 
     @Override
@@ -44,22 +34,44 @@ public class AutoBase extends CommandOpMode {
         initialize();
         waitForStart();
 
-        double turn = m_isRed ? -.45 : 0.45;
-        double turnAngle = m_isRed ? 50 : -50;
+        SequentialCommandGroup shoot = new SequentialCommandGroup(
+                new IndexerMove(m_indexer, 1),
+                new IntakeRollIn(m_intake),
+                new WaitCommand(2000),
+                new ParallelCommandGroup(
+                        new ShooterStop(m_shooter),
+                        new IndexerMove(m_indexer, 0),
+                        new IntakeStop(m_intake)
+                )
+        );
+
+        ParallelCommandGroup pickUpBalls = new ParallelCommandGroup(
+                new FollowPath(m_follower, getRow1StartPose(), getRow1EndPose(), 0.3),
+                new SequentialCommandGroup(
+                        new IntakeRollIn(m_intake),
+                        new WaitCommand(1000),
+                        new IndexerStepUp(m_indexer),
+                        new WaitCommand(300)
+                )
+        );
 
         SequentialCommandGroup autoSequences = new SequentialCommandGroup(
                 new ShooterTargetLow(m_shooter),
                 new ShooterReachTarget(m_shooter, telemetry),
-
-                new IntakeRollIn(m_intake),
-                new IndexerMove(m_indexer, 1),
-                new WaitCommand(3000),
-                new ShooterStop(m_shooter),
-                new IndexerMove(m_indexer, 0),
-
-                new DriveAutoBackward(m_drivetrain),
-                new DriveAutoTurn(m_drivetrain, turn),
-                new DriveAutoForward(m_drivetrain)
+                shoot,
+                new FollowPath(m_follower, getTargetPose(), getRow1StartPose(), 1),
+                pickUpBalls,
+                new ParallelCommandGroup(
+                    new FollowPath(m_follower, getRow1EndPose(), getTarget2Pose(), 1),
+                    new SequentialCommandGroup(
+                            new IndexerStepDown(m_indexer),
+                            new ShooterTargetLow(m_shooter),
+                            new ShooterReachTarget(m_shooter, telemetry)
+                    )
+                ),
+                shoot,
+                new FollowPath(m_follower, getTarget2Pose(), getRow2StartPose(), 1),
+                pickUpBalls
         );
         schedule(autoSequences);
 
@@ -70,4 +82,37 @@ public class AutoBase extends CommandOpMode {
         reset();
     }
 
+    Pose getTargetPose()
+    {
+        final Pose poseRed = new Pose(50, 52, Math.toRadians(40));
+        final Pose poseBlue = new Pose(-50, 52, Math.toRadians(180-40));
+        return m_isRed ? poseRed : poseBlue;
+    }
+
+    Pose getTarget2Pose()
+    {
+        final Pose poseRed = new Pose(48, 50, Math.toRadians(40));
+        final Pose poseBlue = new Pose(-48, 50, Math.toRadians(180-40));
+        return m_isRed ? poseRed : poseBlue;
+    }
+    Pose getRow1StartPose()
+    {
+        final Pose poseRed = new Pose(24, 12, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-24, 12, Math.toRadians(180));
+        return m_isRed ? poseRed : poseBlue;
+    }
+
+    Pose getRow1EndPose()
+    {
+        final Pose poseRed = new Pose(56, 12, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-56, 12, Math.toRadians(180));
+        return m_isRed ? poseRed : poseBlue;
+    }
+
+    Pose getRow2StartPose()
+    {
+        final Pose poseRed = new Pose(24, -12, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-24, -12, Math.toRadians(180));
+        return m_isRed ? poseRed : poseBlue;
+    }
  }
