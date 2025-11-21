@@ -11,7 +11,7 @@ public class Indexer extends SubsystemBase {
     private DcMotor m_indexer;
     Telemetry m_telemetry;
     double m_indexerPower = 0;
-    final double IndexerPower = 0.75;
+    final double IndexerPower = 1;
 
     public Indexer(final HardwareMap hmap, final Telemetry telemetry) {
         m_indexer = hmap.get(DcMotor.class, "indexer");
