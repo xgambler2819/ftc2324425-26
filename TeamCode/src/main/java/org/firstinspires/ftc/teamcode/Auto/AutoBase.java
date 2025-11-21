@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
-import com.arcrobotics.ftclib.command.CommandOpMode;
-
-import com.arcrobotics.ftclib.command.SequentialCommandGroup;
-import com.arcrobotics.ftclib.command.WaitCommand;
-
+import com.arcrobotics.ftclib.command.*;
 import org.firstinspires.ftc.teamcode.Command.*;
 import org.firstinspires.ftc.teamcode.SubSystem.*;
+import com.pedropathing.geometry.Pose;
 
 public class AutoBase extends CommandOpMode {
 
@@ -38,6 +35,7 @@ public class AutoBase extends CommandOpMode {
         waitForStart();
 
         SequentialCommandGroup shoot = new SequentialCommandGroup(
+                new IndexerStepDown(m_indexer),
                 new ShooterTargetLow(m_shooter),
                 new ShooterReachTarget(m_shooter, telemetry),
                 new IntakeRollIn(m_intake),
@@ -59,9 +57,7 @@ public class AutoBase extends CommandOpMode {
                 shoot,
                 new FollowPath(m_follower, getTargetPose(), getRow1StartPose(), 1),
                 pickUpBalls,
-                new FollowPath(m_follower, getTargetPose(), getRow1StartPose(), 1),
                 new FollowPath(m_follower, getRow1EndPose(), getTargetPose(), 1),
-                new IndexerStepDown(m_indexer),
                 shoot,
                 new FollowPath(m_follower, getTargetPose(), getRow2StartPose(), 1),
                 pickUpBalls
