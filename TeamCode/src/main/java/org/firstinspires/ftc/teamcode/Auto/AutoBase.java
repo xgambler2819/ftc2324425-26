@@ -37,7 +37,7 @@ public class AutoBase extends CommandOpMode {
         SequentialCommandGroup shoot = new SequentialCommandGroup(
                 new IndexerMove(m_indexer, 1),
                 new IntakeRollIn(m_intake),
-                new WaitCommand(2000),
+                new WaitCommand(3000),
                 new ParallelCommandGroup(
                         new ShooterStop(m_shooter),
                         new IndexerMove(m_indexer, 0),
@@ -46,12 +46,11 @@ public class AutoBase extends CommandOpMode {
         );
 
         ParallelCommandGroup pickUpBalls = new ParallelCommandGroup(
-                new FollowPath(m_follower, getRow1StartPose(), getRow1EndPose(), 0.3),
+                new FollowPath(m_follower, getRow1StartPose(), getRow1EndPose(), 0.35),
                 new SequentialCommandGroup(
                         new IntakeRollIn(m_intake),
-                        new WaitCommand(1000),
-                        new IndexerStepUp(m_indexer),
-                        new WaitCommand(300)
+                        new WaitCommand(1500),
+                        new IndexerStepUp(m_indexer)
                 )
         );
 
@@ -71,7 +70,8 @@ public class AutoBase extends CommandOpMode {
                 ),
                 shoot,
                 new FollowPath(m_follower, getTarget2Pose(), getRow2StartPose(), 1),
-                pickUpBalls
+                pickUpBalls,
+                new IntakeStop(m_intake)
         );
         schedule(autoSequences);
 
