@@ -4,20 +4,15 @@ import com.arcrobotics.ftclib.command.button.Button;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.command.CommandOpMode;
-import com.qualcomm.hardware.limelightvision.LLResult;
-import com.qualcomm.hardware.limelightvision.LLResultTypes;
-import com.qualcomm.hardware.limelightvision.LLStatus;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.teamcode.Command.*;
 import org.firstinspires.ftc.teamcode.SubSystem.*;
 
 
-@TeleOp(name = "TeleOp1")
-public class TeleOp1 extends CommandOpMode {
+@TeleOp(name = "Decode")
+public class Decode extends CommandOpMode {
     private Indexer m_indexer;
     private Intake m_intake;
     private Shooter m_shooter;
@@ -27,13 +22,14 @@ public class TeleOp1 extends CommandOpMode {
     private DriveDefault m_driveDefault;
     private IntakeDefault m_intakeDefault;
     private IndexerDefault m_indexerDefault;
-    private Limelight3A limelight;
+    private LimeLightSubSystem m_limelight;
 
     @Override
     public void initialize() {
         m_gamepad1 = new GamepadEx(gamepad1);
         m_gamepad2 = new GamepadEx(gamepad2);
 
+        m_limelight = new LimeLightSubSystem(hardwareMap, telemetry);
         m_intake = new Intake(hardwareMap, telemetry);
         m_intakeDefault = new IntakeDefault(m_intake, m_gamepad2);
         m_indexer = new Indexer(hardwareMap, telemetry);
@@ -44,7 +40,7 @@ public class TeleOp1 extends CommandOpMode {
         m_drivetrain = new DriveTrain(hardwareMap, telemetry);
         m_driveDefault = new DriveDefault(m_drivetrain, m_gamepad1);
 
-        register(m_drivetrain, m_indexer, m_intake, m_shooter);
+        register(m_limelight, m_drivetrain, m_indexer, m_intake, m_shooter);
         m_drivetrain.setDefaultCommand(m_driveDefault);
         m_intake.setDefaultCommand(m_intakeDefault);
         m_indexer.setDefaultCommand(m_indexerDefault);
@@ -62,25 +58,5 @@ public class TeleOp1 extends CommandOpMode {
         pad2_b.whenPressed(new ShooterBack(m_shooter));
         Button pad2_y = new GamepadButton(m_gamepad2, GamepadKeys.Button.Y);
         pad2_y.whenPressed(new ShooterStop(m_shooter));
-        limelight();
     }
-
-
-    public void limelight() {
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
-        telemetry.setMsTransmissionInterval(11);
-
-        limelight.pipelineSwitch(0);
-
-        limelight.start();
-
-        while (opModeIsActive()){
-            LLStatus status = limelight.getStatus();
-            Pose3D result = limelight.getLatestResult().getBotpose_MT2();
-            telemetry.addData("botpos", result);
-        telemetry.update();
-            }
-
-        }
-
     }

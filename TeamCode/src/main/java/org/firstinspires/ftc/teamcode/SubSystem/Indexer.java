@@ -15,7 +15,6 @@ public class Indexer extends SubsystemBase {
 
     public Indexer(final HardwareMap hmap, final Telemetry telemetry) {
         m_indexer = hmap.get(DcMotor.class, "indexer");
-        m_indexer.setDirection(DcMotorSimple.Direction.REVERSE);
         m_telemetry = telemetry;
         Stop();
     }
