@@ -37,8 +37,10 @@ public class Shooter extends SubsystemBase {
     private int m_targetVelocity = 0;
     boolean m_keepVelocity = false;
 
-    final int HighVelocity = 1300;
-    final int LowVelocity = 1120;
+    // final int HighVelocity = 2800; // can not reach more than 2000
+
+    final int HighVelocity = 2400;
+    final int LowVelocity = 1800; // good for front at 20 inch
     public Shooter(final HardwareMap hmap, final Telemetry telemetry) {
         m_telemetry = telemetry;
         m_motor = new MotorEx(hmap, "shooter", Motor.GoBILDA.BARE);
@@ -47,7 +49,7 @@ public class Shooter extends SubsystemBase {
         m_motor.setRunMode(MotorEx.RunMode.VelocityControl);
         m_motor.setVeloCoefficients(20, 0 , 0);
         m_motor.setFeedforwardCoefficients(0, 0.7, 0);
-        m_motor.setInverted(true);
+        //m_motor.setInverted(false);
 
         m_targetVelocity = 0;
         m_keepVelocity = false;
@@ -86,13 +88,13 @@ public class Shooter extends SubsystemBase {
     private boolean checkReachTarget(){
         double currentVelocity = getVelocity();
         m_reachTarget = false;
-        if (Math.abs(m_targetVelocity) < 0.01)
+        if (Math.abs(m_targetVelocity) < 0.1)
         {
             m_reachTarget = Math.abs(currentVelocity) < 0.1;
         }
         else 
         {
-            m_reachTarget = Math.abs((currentVelocity - m_targetVelocity) / m_targetVelocity) < 0.125;
+            m_reachTarget = Math.abs((currentVelocity - m_targetVelocity) / m_targetVelocity) < 0.13;
         }
         return m_reachTarget;
     }     

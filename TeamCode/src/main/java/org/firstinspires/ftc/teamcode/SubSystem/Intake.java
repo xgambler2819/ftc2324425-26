@@ -15,11 +15,10 @@ public class Intake extends SubsystemBase {
     Telemetry m_telemetry;
 
     double m_intakePower = 0;
-    final double IntakePower = -1;
+    final double IntakePower = 1;
 
     public Intake(final HardwareMap hmap, final Telemetry telemetry) {
         m_intake = hmap.get(DcMotor.class, "intake");
-        m_intake.setDirection(DcMotorSimple.Direction.REVERSE);
         m_telemetry = telemetry;
         Stop();
     }
