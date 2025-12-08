@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.Command.*;
 import org.firstinspires.ftc.teamcode.SubSystem.*;
 import com.pedropathing.geometry.Pose;
 
-public class AutoBase extends CommandOpMode {
+public class AutoBaseSave extends CommandOpMode {
 
     private PathFollower m_follower;
     private Intake m_intake;
@@ -14,7 +14,7 @@ public class AutoBase extends CommandOpMode {
 
     private final boolean m_isRed;
 
-    public AutoBase(boolean isRed)
+    public AutoBaseSave(boolean isRed)
     {
         m_isRed = isRed;
     }
@@ -37,7 +37,7 @@ public class AutoBase extends CommandOpMode {
         SequentialCommandGroup shoot = new SequentialCommandGroup(
                 new IndexerMove(m_indexer, 1),
                 new IntakeRollIn(m_intake),
-                new WaitCommand(2000),
+                new WaitCommand(3000),
                 new ParallelCommandGroup(
                         new ShooterStop(m_shooter),
                         new IndexerMove(m_indexer, 0),
@@ -55,20 +55,13 @@ public class AutoBase extends CommandOpMode {
         );
 
         SequentialCommandGroup autoSequences = new SequentialCommandGroup(
-            new FollowPath(m_follower, new Pose(0, 0, Math.toRadians(0)), new Pose(10, 0, Math.toRadians(0)), 1)
-            /*
-                new ParallelCommandGroup(
-                    new FollowPath(m_follower, getStartPose(), getTargetPose(), 1),
-                    new SequentialCommandGroup(
-                            new ShooterTargetLow(m_shooter),
-                            new ShooterReachTarget(m_shooter, telemetry)
-                    )
-                ),
+                new ShooterTargetLow(m_shooter),
+                new ShooterReachTarget(m_shooter, telemetry),
                 shoot,
                 new FollowPath(m_follower, getTargetPose(), getRow1StartPose(), 1),
                 pickUpBalls,
                 new ParallelCommandGroup(
-                    new FollowPath(m_follower, getRow1EndPose(), getTargetPose(), 1),
+                    new FollowPath(m_follower, getRow1EndPose(), getTarget2Pose(), 1),
                     new SequentialCommandGroup(
                             new IndexerStepDown(m_indexer),
                             new ShooterTargetLow(m_shooter),
@@ -76,10 +69,9 @@ public class AutoBase extends CommandOpMode {
                     )
                 ),
                 shoot,
-                new FollowPath(m_follower, getTargetPose(), getRow2StartPose(), 1),
+                new FollowPath(m_follower, getTarget2Pose(), getRow2StartPose(), 1),
                 pickUpBalls,
                 new IntakeStop(m_intake)
-                */
         );
         schedule(autoSequences);
 
@@ -90,17 +82,17 @@ public class AutoBase extends CommandOpMode {
         reset();
     }
 
-    Pose getStartPose()
+    Pose getTargetPose()
     {
         final Pose poseRed = new Pose(50, 52, Math.toRadians(40));
         final Pose poseBlue = new Pose(-50, 52, Math.toRadians(180-40));
         return m_isRed ? poseRed : poseBlue;
     }
 
-    Pose getTargetPose()
+    Pose getTarget2Pose()
     {
-        final Pose poseRed = new Pose(40, 42, Math.toRadians(40));
-        final Pose poseBlue = new Pose(-40, 42, Math.toRadians(180-40));
+        final Pose poseRed = new Pose(48, 50, Math.toRadians(40));
+        final Pose poseBlue = new Pose(-48, 50, Math.toRadians(180-40));
         return m_isRed ? poseRed : poseBlue;
     }
     Pose getRow1StartPose()
