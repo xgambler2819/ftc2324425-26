@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.SubSystem;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.BezierPoint;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -24,7 +26,15 @@ public class PathFollower extends SubsystemBase {
         m_follower = Constants.createFollower(m_hardwareMap);
         Path path = new Path(new BezierLine(startPose, endPose));
         path.setLinearHeadingInterpolation(startPose.getHeading(), endPose.getHeading());
-        m_follower.setStartingPose(startPose);
+        m_follower.setPose(startPose); //TODO startingpose or pose
+        m_follower.setMaxPower(maxPower);
+        m_follower.followPath(path);
+    }
+    public void startFollowBezierCurve(Pose startPose, Pose controlPoint, Pose endPose, double maxPower){
+        m_follower = Constants.createFollower(m_hardwareMap);
+        Path path = new Path(new BezierCurve(startPose, controlPoint, endPose));
+        path.setLinearHeadingInterpolation(startPose.getHeading(), endPose.getHeading());
+        m_follower.setPose(startPose);
         m_follower.setMaxPower(maxPower);
         m_follower.followPath(path);
     }

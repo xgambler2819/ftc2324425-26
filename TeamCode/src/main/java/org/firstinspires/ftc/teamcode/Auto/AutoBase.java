@@ -55,7 +55,13 @@ public class AutoBase extends CommandOpMode {
         );
 
         SequentialCommandGroup autoSequences = new SequentialCommandGroup(
-            new FollowPath(m_follower, new Pose(0, 0, Math.toRadians(0)), new Pose(10, 0, Math.toRadians(0)), 1)
+            new FollowPath(m_follower, getStartPose(), getTargetPose(), 1),
+            new FollowPath(m_follower, getTargetPose(), getRow1StartPose(), 1),
+            new FollowPath(m_follower, getRow1StartPose(), getRow1EndPose(), 1),
+            new FollowPath(m_follower, getRow1EndPose(), getTargetPose(), 1),
+            new FollowPath(m_follower, getTargetPose(), getRow2StartPose(), 1),
+            new FollowPath(m_follower, getRow1StartPose(), getRow1EndPose(), 1),
+            new FollowPath(m_follower, getRow2EndPose(), getTargetPose(), 1)
             /*
                 new ParallelCommandGroup(
                     new FollowPath(m_follower, getStartPose(), getTargetPose(), 1),
@@ -92,35 +98,42 @@ public class AutoBase extends CommandOpMode {
 
     Pose getStartPose()
     {
-        final Pose poseRed = new Pose(50, 52, Math.toRadians(40));
-        final Pose poseBlue = new Pose(-50, 52, Math.toRadians(180-40));
+        final Pose poseRed = new Pose(53, 47, Math.toRadians(35.5));
+        final Pose poseBlue = new Pose(-53, -47, Math.toRadians(180-35.5));
         return m_isRed ? poseRed : poseBlue;
     }
 
     Pose getTargetPose()
     {
-        final Pose poseRed = new Pose(40, 42, Math.toRadians(40));
-        final Pose poseBlue = new Pose(-40, 42, Math.toRadians(180-40));
+        final Pose poseRed = new Pose(44, 39, Math.toRadians(40));
+        final Pose poseBlue = new Pose(-44, 39, Math.toRadians(180-40));
         return m_isRed ? poseRed : poseBlue;
     }
     Pose getRow1StartPose()
     {
-        final Pose poseRed = new Pose(24, 12, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-24, 12, Math.toRadians(180));
+        final Pose poseRed = new Pose(28, 12, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-28, 12, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
 
     Pose getRow1EndPose()
     {
-        final Pose poseRed = new Pose(56, 12, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-56, 12, Math.toRadians(180));
+        final Pose poseRed = new Pose(50, 12, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-50, 12, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
 
     Pose getRow2StartPose()
     {
-        final Pose poseRed = new Pose(24, -12, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-24, -12, Math.toRadians(180));
+        final Pose poseRed = new Pose(28, -12, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-28, -12, Math.toRadians(180));
+        return m_isRed ? poseRed : poseBlue;
+    }
+
+    Pose getRow2EndPose()
+    {
+        final Pose poseRed = new Pose(50, -12, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-50, -12, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
  }

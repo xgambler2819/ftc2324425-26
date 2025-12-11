@@ -20,14 +20,14 @@ public class Constants {
             .forwardZeroPowerAcceleration(-41.075)
             .lateralZeroPowerAcceleration(-66.381)
             .useSecondaryTranslationalPIDF(true)
-            .useSecondaryHeadingPIDF(true)
-            .useSecondaryDrivePIDF(true)
-            .translationalPIDFCoefficients(new PIDFCoefficients(0.17,0,0.025,0.1))
-            .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.35,0,0.02, 0.02))
-            .headingPIDFCoefficients(new PIDFCoefficients(1.2, 0, 0.04, 0.05))
-            .secondaryHeadingPIDFCoefficients(new PIDFCoefficients(0.003, 0, 0.0001, 0.00005))
-            .drivePIDFCoefficients(new FilteredPIDFCoefficients(1,0,0.05,0.6,0.06))
-            .secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.00001, 0, 0,0.6, 0.001))
+            .translationalPIDFCoefficients(new PIDFCoefficients(0.035,0,0.0001,0.06))
+            .secondaryTranslationalPIDFCoefficients(new PIDFCoefficients(0.1,0,0.0001, 0.0005))
+            .useSecondaryHeadingPIDF(false)
+            .headingPIDFCoefficients(new PIDFCoefficients(0.7, 0, 0.01, 0.04))
+            //.secondaryHeadingPIDFCoefficients(new PIDFCoefficients(0.003, 0, 0.0001, 0.00005))
+            .useSecondaryDrivePIDF(false)
+            .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.007,0,0.00002,0.6,0.06))
+            //.secondaryDrivePIDFCoefficients(new FilteredPIDFCoefficients(0.00001, 0, 0,0.6, 0.001))
             .centripetalScaling(0.0005);
 
 
@@ -54,7 +54,12 @@ public class Constants {
             .forwardEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
             .strafeEncoderDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD);
 
-    public static PathConstraints pathConstraints = new PathConstraints(0.975, 100, 0.5, 1);
+    public static PathConstraints pathConstraints =
+            new PathConstraints(
+            0.975,
+            100,
+            1.6,
+            1);
 
     public static Follower createFollower(HardwareMap hardwareMap) {
         return new FollowerBuilder(followerConstants, hardwareMap)
