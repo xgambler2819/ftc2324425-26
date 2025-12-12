@@ -45,7 +45,7 @@ public class Shooter extends SubsystemBase {
         m_telemetry = telemetry;
         m_motor = new MotorEx(hmap, "shooter", Motor.GoBILDA.BARE);
         m_led = hmap.get(Servo.class, "led");
-        m_led.setPosition(0.279);
+        m_led.setPosition(Color_White);
         m_motor.setRunMode(MotorEx.RunMode.VelocityControl);
         m_motor.setVeloCoefficients(20, 0 , 0);
         m_motor.setFeedforwardCoefficients(0, 0.7, 0);
@@ -98,7 +98,6 @@ public class Shooter extends SubsystemBase {
         }
         return m_reachTarget;
     }     
-
 
     public void periodic() {
         if(m_keepVelocity){
