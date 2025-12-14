@@ -70,7 +70,7 @@ public class AutoBase extends CommandOpMode {
 
         //FollowBezierPath row2EndToTarget3 = new FollowBezierPath(m_follower, getRow2EndPose(), getRow2EndToTargetControl(), getTarget3Pose(),1);
 
-        FollowBezierPath targetToRow3Start = new FollowBezierPath(m_follower, getTargetPose(), getTargetRow3Control(), getRow3StartPose(),1);
+        FollowBezierPathLL targetToRow3Start = new FollowBezierPathLL(m_follower, m_limeLight, getTargetPose(), getTargetRow3Control(), getRow3StartPose(),1);
 
         SequentialCommandGroup autoSequence = new SequentialCommandGroup(
                 new ParallelCommandGroup(
@@ -110,6 +110,7 @@ public class AutoBase extends CommandOpMode {
                         new ShooterReachTarget(m_shooter, telemetry)
                     )),
                 shoot,
+                new IntakeRollIn(m_intake),
                 targetToRow3Start, new WaitCommand(300),
                 pickUpBalls
 /*
@@ -215,8 +216,8 @@ public class AutoBase extends CommandOpMode {
 
     Pose getRow3StartPose()
     {
-        final Pose poseRed = new Pose(20, -44, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-20, -44, Math.toRadians(180));
+        final Pose poseRed = new Pose(25, -38, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-25, -38, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
 
