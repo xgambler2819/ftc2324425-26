@@ -196,14 +196,14 @@ public class AutoBase extends CommandOpMode {
     Pose getRow2StartPose()
     {
         final Pose poseRed = new Pose(20, -16, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-20, -16, Math.toRadians(180));
+        final Pose poseBlue = new Pose(-24, -12, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
 
     Pose getRow2EndPose()
     {
         final Pose poseRed = new Pose(42, -16, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-42, -16, Math.toRadians(180));
+        final Pose poseBlue = new Pose(-42, -12, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
 
@@ -217,7 +217,7 @@ public class AutoBase extends CommandOpMode {
     Pose getRow3StartPose()
     {
         final Pose poseRed = new Pose(25, -38, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-25, -38, Math.toRadians(180));
+        final Pose poseBlue = new Pose(-30, -34, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
 
