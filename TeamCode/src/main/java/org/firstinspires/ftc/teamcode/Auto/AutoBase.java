@@ -11,6 +11,7 @@ public class AutoBase extends CommandOpMode {
     private Intake m_intake;
     private Indexer m_indexer;
     private Shooter m_shooter;
+    private LimeLightSubSystem m_limeLight;
 
     private final boolean m_isRed;
 
@@ -21,12 +22,14 @@ public class AutoBase extends CommandOpMode {
     @Override
     public void initialize() {
         m_follower = new PathFollower(hardwareMap, telemetry);
+        m_follower.RecalibrateIMU();
 
+        m_limeLight = new LimeLightSubSystem(hardwareMap, telemetry);
         m_intake = new Intake(hardwareMap, telemetry);
         m_indexer = new Indexer(hardwareMap, telemetry);
         m_shooter = new Shooter(hardwareMap, telemetry);
         m_shooter.setStop();
-        register(m_follower, m_intake, m_indexer, m_shooter);
+        register(m_follower, m_limeLight, m_intake, m_indexer, m_shooter);
     }
 
     private SequentialCommandGroup CreateAutoSequence()
@@ -44,52 +47,72 @@ public class AutoBase extends CommandOpMode {
                 )
         );
 
-        FollowBezierPath targetToRow1Start = new FollowBezierPath(m_follower, getTargetPose(), getTargetRow1Control(), getRow1StartPose(),1);
+        FollowBezierPath targetToRow1Start =
+                new FollowBezierPath(m_follower,
+                        getTargetPose(), getTargetRow1Control(), getRow1StartPose(),1);
 
-        FollowPath row1StartToEnd = new FollowPath(m_follower, getRow1StartPose(), getRow1EndPose(), 0.5);
+        FollowPath row1StartToEnd =
+                new FollowPath(m_follower,
+                        getRow1StartPose(), getRow1EndPose(), 0.5);
         ParallelCommandGroup pickUpBalls = new ParallelCommandGroup(
-                new SequentialCommandGroup(row1StartToEnd, new WaitCommand(100)),
+                new SequentialCommandGroup(row1StartToEnd, new WaitCommand(300)),
                 new SequentialCommandGroup(
                         new WaitCommand(500),
                         new IndexerStepUp(m_indexer)
                 )
         );
         
-        FollowPath row1EndToTarget = new FollowPath(m_follower, getRow1EndPose(), getTargetPose(), 1);
+        FollowPath row1EndToTarget2 = new FollowPath(m_follower, getRow1EndPose(), getTarget2Pose(), 1);
        
         FollowBezierPath targetToRow2Start = new FollowBezierPath(m_follower, getTargetPose(), getTargetRow2Control(), getRow2StartPose(),1);
-        
-        FollowBezierPath row2EndToTarget = new FollowBezierPath(m_follower, getRow2EndPose(), getRow2EndToTargetControl(), getTargetPose(),1);
+
+        FollowBezierPath row2EndToTarget2 = new FollowBezierPath(m_follower, getRow2EndPose(), getRow2EndToTargetControl(), getTarget2Pose(),1);
+
+        //FollowBezierPath row2EndToTarget3 = new FollowBezierPath(m_follower, getRow2EndPose(), getRow2EndToTargetControl(), getTarget3Pose(),1);
+
+        FollowBezierPath targetToRow3Start = new FollowBezierPath(m_follower, getTargetPose(), getTargetRow3Control(), getRow3StartPose(),1);
 
         SequentialCommandGroup autoSequence = new SequentialCommandGroup(
                 new ParallelCommandGroup(
-                    new SequentialCommandGroup(startToTarget, new WaitCommand(100)),
                     new SequentialCommandGroup(
-                            new ShooterTargetLow(m_shooter),
-                            new ShooterReachTarget(m_shooter, telemetry)
+                        startToTarget,
+                        new WaitCommand(300)),
+                    new SequentialCommandGroup(
+                        new ShooterTargetLow(m_shooter),
+                        new ShooterReachTarget(m_shooter, telemetry)
                     )),
                 shoot,
                 new IntakeRollIn(m_intake),
-                targetToRow1Start, new WaitCommand(100),
+                targetToRow1Start, new WaitCommand(300),
                 pickUpBalls,
                 new ParallelCommandGroup(
-                    new SequentialCommandGroup(row1EndToTarget,new WaitCommand(100)),
                     new SequentialCommandGroup(
-                            new ShooterTargetLow(m_shooter),
-                            new ShooterReachTarget(m_shooter, telemetry)
+                        row1EndToTarget2, 
+                        new LimeLightWaitPose(m_limeLight),
+                        new FollowPathLL(m_follower, m_limeLight, getTarget2Pose(), getTargetPose(), 1)),
+                    new SequentialCommandGroup(
+                        new ShooterTargetLow(m_shooter),
+                        new ShooterReachTarget(m_shooter, telemetry)
                     )),
                 shoot,
                 new IntakeRollIn(m_intake),
-                targetToRow2Start, new WaitCommand(100),
+                targetToRow2Start, new WaitCommand(300),
                 pickUpBalls,
                 new ParallelCommandGroup(
-                    new SequentialCommandGroup(row2EndToTarget,new WaitCommand(100)),
+                    row2EndToTarget2,
+                    /*new SequentialCommandGroup(
+                        row2EndToTarget3,
+                        new LimeLightWaitPose(m_limeLight),
+                        new FollowPathLL(m_follower, m_limeLight, getTarget3Pose(), getTargetPose(), 1)),
+                    */
                     new SequentialCommandGroup(
-                            new ShooterTargetLow(m_shooter),
-                            new ShooterReachTarget(m_shooter, telemetry)
+                        new ShooterTargetLow(m_shooter),
+                        new ShooterReachTarget(m_shooter, telemetry)
                     )),
-                shoot
-                /*,
+                shoot,
+                targetToRow3Start, new WaitCommand(300),
+                pickUpBalls
+/*
                 new FollowPath(m_follower, getTargetPose(), getRow2StartPose(), 1),
                 pickUpBalls,
                 new IntakeStop(m_intake)
@@ -115,15 +138,29 @@ public class AutoBase extends CommandOpMode {
 
     Pose getStartPose()
     {
-        final Pose poseRed = new Pose(44, 56, Math.toRadians(36));
-        final Pose poseBlue = new Pose(-44, 56, Math.toRadians(180-36));
+        final Pose poseRed = new Pose(48, 52, Math.toRadians(36));
+        final Pose poseBlue = new Pose(-48, 52, Math.toRadians(180-36));
         return m_isRed ? poseRed : poseBlue;
     }
 
     Pose getTargetPose()
     {
-        final Pose poseRed = new Pose(26, 42, Math.toRadians(36));
-        final Pose poseBlue = new Pose(-26, 42, Math.toRadians(180-36));
+        final Pose poseRed = new Pose(30, 38, Math.toRadians(36));
+        final Pose poseBlue = new Pose(-30, 38, Math.toRadians(180-36));
+        return m_isRed ? poseRed : poseBlue;
+    }
+
+    Pose getTarget2Pose()
+    {
+        final Pose poseRed = new Pose(22, 31, Math.toRadians(36));
+        final Pose poseBlue = new Pose(-22, 31, Math.toRadians(180-36));
+        return m_isRed ? poseRed : poseBlue;
+    }
+
+    Pose getTarget3Pose()
+    {
+        final Pose poseRed = new Pose(14, 24, Math.toRadians(36));
+        final Pose poseBlue = new Pose(-14, 24, Math.toRadians(180-36));
         return m_isRed ? poseRed : poseBlue;
     }
 
@@ -143,8 +180,8 @@ public class AutoBase extends CommandOpMode {
 
     Pose getRow1EndPose()
     {
-        final Pose poseRed = new Pose(45, 12, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-45, 12, Math.toRadians(180));
+        final Pose poseRed = new Pose(42, 12, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-42, 12, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
 
@@ -157,15 +194,15 @@ public class AutoBase extends CommandOpMode {
 
     Pose getRow2StartPose()
     {
-        final Pose poseRed = new Pose(25, -12, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-25, -12, Math.toRadians(180));
+        final Pose poseRed = new Pose(20, -16, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-20, -16, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
 
     Pose getRow2EndPose()
     {
-        final Pose poseRed = new Pose(45, -12, Math.toRadians(0));
-        final Pose poseBlue = new Pose(-45, -12, Math.toRadians(180));
+        final Pose poseRed = new Pose(42, -16, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-42, -16, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
 
@@ -173,6 +210,22 @@ public class AutoBase extends CommandOpMode {
     {
         final Pose poseRed = new Pose(-20, -12, Math.toRadians(30));
         final Pose poseBlue = new Pose(20, 12, Math.toRadians(180-30));
+        return m_isRed ? poseRed : poseBlue;
+    }
+
+    Pose getRow3StartPose()
+    {
+        final Pose poseRed = new Pose(20, -44, Math.toRadians(0));
+        final Pose poseBlue = new Pose(-20, -44, Math.toRadians(180));
+        return m_isRed ? poseRed : poseBlue;
+    }
+
+
+
+    Pose getTargetRow3Control()
+    {
+        final Pose poseRed = new Pose(-5, -48, Math.toRadians(0));
+        final Pose poseBlue = new Pose(5, -48, Math.toRadians(180));
         return m_isRed ? poseRed : poseBlue;
     }
  }

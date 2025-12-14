@@ -8,6 +8,7 @@ import com.pedropathing.geometry.Pose;
 public class AutoBaseSquare extends CommandOpMode {
 
     private PathFollower m_follower;
+    private LimeLightSubSystem m_limelight;
     private Intake m_intake;
     private Indexer m_indexer;
     private Shooter m_shooter;
@@ -22,11 +23,12 @@ public class AutoBaseSquare extends CommandOpMode {
     public void initialize() {
         m_follower = new PathFollower(hardwareMap, telemetry);
         m_follower.RecalibrateIMU();
+        m_limelight = new LimeLightSubSystem(hardwareMap, telemetry);
         m_intake = new Intake(hardwareMap, telemetry);
         m_indexer = new Indexer(hardwareMap, telemetry);
         m_shooter = new Shooter(hardwareMap, telemetry);
         m_shooter.setStop();
-        register(m_follower, m_intake, m_indexer, m_shooter);
+        register(m_follower, m_limelight, m_intake, m_indexer, m_shooter);
     }
 
     private SequentialCommandGroup CreateAutoSequence()
@@ -38,16 +40,16 @@ public class AutoBaseSquare extends CommandOpMode {
       
         SequentialCommandGroup autoSequence = new SequentialCommandGroup(
             //new FollowerStop(m_follower),
-            new WaitCommand(100),
+            new WaitCommand(3000),
             new FollowPath(m_follower, poseOrigin, poseX, 1),
             //new FollowerStop(m_follower),
-            new WaitCommand(100),
+            new WaitCommand(3000),
             new FollowPath(m_follower, poseX, poseXY, 1),
             //new FollowerStop(m_follower),
-            new WaitCommand(100),
+            new WaitCommand(3000),
             new FollowPath(m_follower, poseXY, poseY, 1),
             //new FollowerStop(m_follower),
-            new WaitCommand(100),
+            new WaitCommand(3000),
             new FollowPath(m_follower, poseY, poseOrigin, 1)
             //new FollowerStop(m_follower)
         );

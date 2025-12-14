@@ -58,6 +58,25 @@ public class PathFollower extends SubsystemBase {
         m_follower.setMaxPower(maxPower);
         m_follower.followPath(path);
     }
+    public void startFollowBezier5Curve(Pose startPose, Pose controlPoint,
+                                        Pose controlPoint2,Pose controlPoint3,
+                                        Pose controlPoint4,Pose controlPoint5,
+                                        Pose endPose, double maxPower){
+        m_follower = Constants.createFollower(m_hardwareMap);
+        Path path = new Path(new BezierCurve(startPose, controlPoint, controlPoint2,controlPoint3,controlPoint4,controlPoint5,endPose));
+        path.setLinearHeadingInterpolation(startPose.getHeading(), endPose.getHeading());
+        m_follower.setPose(startPose);
+        m_follower.setMaxPower(maxPower);
+        m_follower.followPath(path);
+    }
+    public void followStartingPath(Pose startPose, Pose endPose, double maxPower){
+        m_follower = Constants.createFollower(m_hardwareMap);
+        Path path = new Path(new BezierLine(startPose, endPose));
+        path.setLinearHeadingInterpolation(startPose.getHeading(), endPose.getHeading());
+        m_follower.setStartingPose(startPose);
+        m_follower.setMaxPower(maxPower);
+        m_follower.followPath(path);
+    }
 
     public void Stop()
     {
@@ -72,6 +91,10 @@ public class PathFollower extends SubsystemBase {
     }
 
     public void periodic() {
+        if (m_follower == null)
+        {
+            return;
+        }
         // These loop the movements of the robot, these must be called continuously in order to work
         m_follower.update();
         Pose pose = m_follower.getPose();
