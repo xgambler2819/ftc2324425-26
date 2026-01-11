@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.SubSystem;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 
+
+import com.pedropathing.geometry.PedroCoordinates;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -14,6 +16,7 @@ public class LimeLightSubSystem extends SubsystemBase {
     private Limelight3A m_limeLight3A;
 
     private Pose m_lastPose = null;
+    private Pose m_pedroPose =  null;
     private long m_lastTime = 0;
 
     Telemetry m_telemetry;
@@ -23,6 +26,8 @@ public class LimeLightSubSystem extends SubsystemBase {
         m_limeLight3A.pipelineSwitch(0);
         m_limeLight3A.start();
     }
+
+    public Pose getPedroPose(){return m_pedroPose;}
 
     public Pose getLasePose() { return m_lastPose; }
     public long getLastTime() { return m_lastTime; }
@@ -34,7 +39,6 @@ public class LimeLightSubSystem extends SubsystemBase {
             m_telemetry.addData("botpos", "null");
         } else if (result.isValid()) {
             Pose3D botPose = result.getBotpose();
-            m_telemetry.addData("botpos", botPose);
             Position position = botPose.getPosition().toUnit(DistanceUnit.INCH);
             double llx = position.y;
             double lly = -position.x;
@@ -42,8 +46,19 @@ public class LimeLightSubSystem extends SubsystemBase {
             double llangle = angles.getYaw() - 90;
             m_lastPose = new Pose(llx, lly, (llangle)/180*3.1416);
             m_lastTime = System.currentTimeMillis();
+
+            m_pedroPose = new Pose(llx+72, lly+72, (llangle)/180*Math.PI);
+            m_telemetry.addData("botpos", botPose);
+            m_telemetry.addData("pedropos", m_pedroPose);
         } else {
             m_telemetry.addData("botpos", "invalid");
+        }
+        if (m_pedroPose != null){
+            m_telemetry.addData("lastpedrox", m_pedroPose.getX());
+            m_telemetry.addData("lastpedroy", m_pedroPose.getY());
+            m_telemetry.addData("lastpedroangle", m_pedroPose.getHeading());
+        } else {
+            m_telemetry.addData("m_pedroPose", "null");
         }
 
         if (m_lastPose != null)
@@ -61,8 +76,10 @@ public class LimeLightSubSystem extends SubsystemBase {
         if (delay > 3000)
         {
             m_lastPose = null;
+            m_pedroPose = null;
         }
     }
+
 }
 
 

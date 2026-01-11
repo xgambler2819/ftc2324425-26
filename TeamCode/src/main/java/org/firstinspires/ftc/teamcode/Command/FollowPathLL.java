@@ -25,11 +25,11 @@ public class FollowPathLL extends CommandBase {
    
     @Override
     public void initialize () {
-        Pose llPose = m_limeLight.getLasePose();
+        Pose llPose = m_limeLight.getPedroPose();
         Pose startPose = m_startPose;
         if (llPose != null)
         {
-            llPose = llPose;
+            startPose = llPose;
         }
         m_follower.startFollowPath(startPose, m_endPose, m_power);
     }

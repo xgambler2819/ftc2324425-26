@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.SubSystem;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
-import com.pedropathing.ftc.drivetrains.Mecanum;
 import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.BezierPoint;
@@ -10,7 +9,7 @@ import com.pedropathing.paths.Path;
 import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.ftc.drivetrains.Mecanum;
+//import com.pedropathing.ftc.drivetrains.Mecanum;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedroPathing.Constants;
@@ -35,10 +34,11 @@ public class PathFollower extends SubsystemBase {
         m_follower = Constants.createFollower(m_hardwareMap);
         Path path = new Path(new BezierLine(startPose, endPose));
         path.setLinearHeadingInterpolation(startPose.getHeading(), endPose.getHeading());
-        m_follower.setPose(startPose); //TODO startingpose or pose
+        m_follower.setPose(startPose);
         m_follower.setMaxPower(maxPower);
         m_follower.followPath(path);
     }
+
 
     public void startFollowPoints(List<Pose> points, double maxPower){
         m_follower = Constants.createFollower(m_hardwareMap);
@@ -78,12 +78,12 @@ public class PathFollower extends SubsystemBase {
         m_follower.followPath(path);
     }
 
-    public void Stop()
-    {
-        Mecanum drive = (Mecanum)m_follower.drivetrain;
-        double[] zeros = {0,0,0,0};
-        drive.runDrive(zeros);
-    }
+//    public void Stop()
+//    {
+//        Mecanum drive = (Mecanum)m_follower.drivetrain;
+//        double[] zeros = {0,0,0,0};
+//        drive.runDrive(zeros);
+//    }
 
     public boolean followFinished()
     {

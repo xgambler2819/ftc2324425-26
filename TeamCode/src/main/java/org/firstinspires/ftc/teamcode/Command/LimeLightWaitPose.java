@@ -20,7 +20,8 @@ public class LimeLightWaitPose extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return m_limeLight.getLastTime() > m_startTime && m_limeLight.getLasePose() != null;
+        return m_limeLight.getLastTime() > m_startTime
+                && m_limeLight.getLasePose() != null;
     }
 }
 
