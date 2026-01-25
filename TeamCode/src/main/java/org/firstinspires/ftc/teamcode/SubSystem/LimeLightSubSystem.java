@@ -17,6 +17,7 @@ public class LimeLightSubSystem extends SubsystemBase {
 
     private Pose m_lastPose = null;
     private Pose m_pedroPose =  null;
+    private double m_tx;
     private long m_lastTime = 0;
 
     Telemetry m_telemetry;
@@ -30,6 +31,9 @@ public class LimeLightSubSystem extends SubsystemBase {
     public Pose getPedroPose(){return m_pedroPose;}
 
     public Pose getLasePose() { return m_lastPose; }
+    public double getTx(){
+        return m_tx;
+    }
     public long getLastTime() { return m_lastTime; }
 
     @Override
@@ -38,6 +42,7 @@ public class LimeLightSubSystem extends SubsystemBase {
         if (result == null) {
             m_telemetry.addData("botpos", "null");
         } else if (result.isValid()) {
+            m_tx = result.getTx();
             Pose3D botPose = result.getBotpose();
             Position position = botPose.getPosition().toUnit(DistanceUnit.INCH);
             double llx = position.y;
@@ -50,6 +55,7 @@ public class LimeLightSubSystem extends SubsystemBase {
             m_pedroPose = new Pose(llx+72, lly+72, (llangle)/180*Math.PI);
             m_telemetry.addData("botpos", botPose);
             m_telemetry.addData("pedropos", m_pedroPose);
+            m_telemetry.addData("tx", m_tx);
         } else {
             m_telemetry.addData("botpos", "invalid");
         }

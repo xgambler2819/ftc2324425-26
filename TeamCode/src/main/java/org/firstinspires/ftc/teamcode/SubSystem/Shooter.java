@@ -39,14 +39,15 @@ public class Shooter extends SubsystemBase {
 
     // final int HighVelocity = 2800; // can not reach more than 2000
 
-    final int HighVelocity = 2400;
-    final int LowVelocity = 1800; // good for front at 20 inch
+    final int HighVelocity = 1600; //676767676
+    final int LowVelocity = 1000; // good for front at 20 inch
     public Shooter(final HardwareMap hmap, final Telemetry telemetry) {
         m_telemetry = telemetry;
         m_motor = new MotorEx(hmap, "shooter", Motor.GoBILDA.BARE);
         m_led = hmap.get(Servo.class, "led");
         m_led.setPosition(Color_White);
         m_motor.setRunMode(MotorEx.RunMode.VelocityControl);
+        m_motor.setInverted(true);
         m_motor.setVeloCoefficients(20, 0 , 0);
         m_motor.setFeedforwardCoefficients(0, 0.7, 0);
         //m_motor.setInverted(false);

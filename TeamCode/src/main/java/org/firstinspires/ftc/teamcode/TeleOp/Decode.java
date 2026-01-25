@@ -45,10 +45,14 @@ public class Decode extends CommandOpMode {
         m_intake.setDefaultCommand(m_intakeDefault);
         m_indexer.setDefaultCommand(m_indexerDefault);
 
+        Button pad1_a = new GamepadButton(m_gamepad1, GamepadKeys.Button.A);
+        pad1_a.whenHeld(new DriveTurnToLL(m_limelight, m_drivetrain, m_gamepad1));
+
         Button pad2_dpad_up = new GamepadButton(m_gamepad2, GamepadKeys.Button.DPAD_UP);
         pad2_dpad_up.whenPressed(new IndexerStepUp(m_indexer));
         Button pad2_dpad_down = new GamepadButton(m_gamepad2, GamepadKeys.Button.DPAD_DOWN);
         pad2_dpad_down.whenPressed(new IndexerStepDown(m_indexer));
+
 
         Button pad2_a = new GamepadButton(m_gamepad2, GamepadKeys.Button.A);
         pad2_a.whenPressed(new ShooterTargetLow(m_shooter));
