@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
     // final int HighVelocity = 2800; // can not reach more than 2000
 
     final int HighVelocity = 1600; //676767676
-    final int LowVelocity = 1000; // good for front at 20 inch
+    final int LowVelocity = 1400; // good for front at 20 inch
     public Shooter(final HardwareMap hmap, final Telemetry telemetry) {
         m_telemetry = telemetry;
         m_motor = new MotorEx(hmap, "shooter", Motor.GoBILDA.BARE);
@@ -70,6 +70,9 @@ public class Shooter extends SubsystemBase {
     public void setLow()
     {
         setState(LowVelocity, true);
+    }
+    public void setProportionalVelocity(int vel){
+        setState(vel, true);
     }
 
     public void setStop()

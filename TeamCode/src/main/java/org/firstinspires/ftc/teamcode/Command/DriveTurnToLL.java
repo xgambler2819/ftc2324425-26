@@ -16,7 +16,7 @@ public class DriveTurnToLL extends CommandBase {
     private final DriveTrain m_drive;
     private LimeLightSubSystem m_limeLight;
     private final GamepadEx m_gpad;
-    private boolean turn = false;
+    private boolean m_finished = false;
 
 
     public DriveTurnToLL(LimeLightSubSystem limelight, DriveTrain subsystem, GamepadEx gpad) {
@@ -28,22 +28,22 @@ public class DriveTurnToLL extends CommandBase {
 
     @Override
     public void execute() {
-       if (m_limeLight.getTx()>0.2) {
-           turn = false;
-           m_drive.driveRobotCentric(0, 0, -0.2);
-       } else if (m_limeLight.getTx()<-0.2){
-           turn = false;//67 haha we set turn false (whos we)
-           m_drive.driveRobotCentric(0, 0, 0.2);
+       if (m_limeLight.getTx()>=3) {
+           m_finished = false;
+           m_drive.driveRobotCentric(0, 0, -0.4);
+       } else if (m_limeLight.getTx()<=-3){
+           m_finished = false;
+           m_drive.driveRobotCentric(0, 0, 0.4);
 
-       } else if ((m_limeLight.getTx())>-0.1 && (m_limeLight.getTx()<0.1)) {
+       } else if ((m_limeLight.getTx()>-3) && (m_limeLight.getTx()<3)) {
            m_drive.driveRobotCentric(0, 0, 0);
-           turn = true;
+           m_finished = true;
        }
 
     }
     @Override
     public boolean isFinished(){
-        return turn;
+        return m_finished;
     }
 
 }

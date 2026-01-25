@@ -24,6 +24,7 @@ public class Decode extends CommandOpMode {
     private IndexerDefault m_indexerDefault;
     private LimeLightSubSystem m_limelight;
 
+
     @Override
     public void initialize() {
         m_gamepad1 = new GamepadEx(gamepad1);
@@ -47,6 +48,10 @@ public class Decode extends CommandOpMode {
 
         Button pad1_a = new GamepadButton(m_gamepad1, GamepadKeys.Button.A);
         pad1_a.whenHeld(new DriveTurnToLL(m_limelight, m_drivetrain, m_gamepad1));
+
+        Button pad1_b = new GamepadButton(m_gamepad1, GamepadKeys.Button.B);
+        pad1_b.whenPressed(new ShooterProportional(m_shooter, m_limelight));
+
 
         Button pad2_dpad_up = new GamepadButton(m_gamepad2, GamepadKeys.Button.DPAD_UP);
         pad2_dpad_up.whenPressed(new IndexerStepUp(m_indexer));
