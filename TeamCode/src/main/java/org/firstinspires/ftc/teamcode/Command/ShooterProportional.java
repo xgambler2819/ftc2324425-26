@@ -23,7 +23,7 @@ public class ShooterProportional extends CommandBase {
         double y =  yay.getY();
         double predist = Math.pow((134-x), 2) + Math.pow((134-y), 2);
         double distance = Math.sqrt(predist);
-        double speed = 4.91*distance + 995;
+        double speed = 4.91*distance + 1006;
         m_shooter.setProportionalVelocity((int) speed);
 
     }

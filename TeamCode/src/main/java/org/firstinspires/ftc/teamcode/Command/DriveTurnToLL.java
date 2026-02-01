@@ -28,14 +28,16 @@ public class DriveTurnToLL extends CommandBase {
 
     @Override
     public void execute() {
-       if (m_limeLight.getTx()>=3) {
+        int rightLimit = -4;
+        int leftLimit = 2;
+       if (m_limeLight.getTx()>=leftLimit) {
            m_finished = false;
            m_drive.driveRobotCentric(0, 0, -0.4);
-       } else if (m_limeLight.getTx()<=-3){
+       } else if (m_limeLight.getTx()<=rightLimit){
            m_finished = false;
            m_drive.driveRobotCentric(0, 0, 0.4);
 
-       } else if ((m_limeLight.getTx()>-3) && (m_limeLight.getTx()<3)) {
+       } else if ((m_limeLight.getTx()>rightLimit) && (m_limeLight.getTx()<leftLimit)) {
            m_drive.driveRobotCentric(0, 0, 0);
            m_finished = true;
        }
